@@ -1,0 +1,213 @@
+import type { Property } from "@/types";
+import prop1 from "@/assets/property-1.jpg";
+import prop2 from "@/assets/property-2.jpg";
+import prop3 from "@/assets/property-3.jpg";
+import prop4 from "@/assets/property-4.jpg";
+import prop5 from "@/assets/property-5.jpg";
+import prop6 from "@/assets/property-6.jpg";
+
+export const PROPERTIES: Property[] = [
+  {
+    id: "prop-001",
+    title: "Sky Residences Penthouse - Tower A",
+    type: "penthouse",
+    listingType: "buy",
+    price: 45000000,
+    location: { city: "Mumbai", area: "Bandra West", address: "14 Sea View Road, Bandra West, Mumbai 400050" },
+    specs: { bedrooms: 4, bathrooms: 5, area: 4200, parking: 3, floor: 32, totalFloors: 35 },
+    features: ["Sea View", "Private Terrace", "Smart Home", "Private Elevator", "Designer Kitchen"],
+    images: [prop1, prop2, prop3],
+    description: "An extraordinary penthouse residence offering panoramic Arabian Sea views from the 32nd floor. This ultra-luxury property features designer interiors, private rooftop terrace, smart home automation, and bespoke finishes throughout.",
+    ownerId: "user-seller-001",
+    ownerName: "Vikram Properties",
+    ownerAvatar: "",
+    status: "active",
+    verified: true,
+    featured: true,
+    rating: 4.9,
+    reviews: 28,
+    virtualTour: true,
+    postedDate: "2025-04-10",
+    views: 2847,
+    amenities: ["Swimming Pool", "Gym", "Spa", "Concierge", "Valet Parking", "Children's Play Area", "Club House", "Security"]
+  },
+  {
+    id: "prop-002",
+    title: "Serene Villa with Pool - Bangalore",
+    type: "villa",
+    listingType: "buy",
+    price: 28000000,
+    location: { city: "Bangalore", area: "Whitefield", address: "Green Valley Estate, Whitefield, Bangalore 560066" },
+    specs: { bedrooms: 5, bathrooms: 4, area: 5800, parking: 4, floor: 1, totalFloors: 2 },
+    features: ["Private Pool", "Landscaped Garden", "Home Theater", "Solar Power", "EV Charging"],
+    images: [prop2, prop4, prop5],
+    description: "A stunning contemporary villa nestled in the serene tech corridor of Whitefield. Features an infinity pool, lush tropical gardens, 5 elegantly designed bedroom suites, and cutting-edge smart home systems.",
+    ownerId: "user-seller-002",
+    ownerName: "Priya Estates",
+    ownerAvatar: "",
+    status: "active",
+    verified: true,
+    featured: true,
+    rating: 4.8,
+    reviews: 19,
+    virtualTour: true,
+    postedDate: "2025-03-22",
+    views: 1923,
+    amenities: ["Swimming Pool", "Gym", "Home Theater", "Garden", "Security", "Servant Quarters"]
+  },
+  {
+    id: "prop-003",
+    title: "Premium Smart Apartment - DLF Phase 5",
+    type: "apartment",
+    listingType: "rent",
+    price: 85000,
+    priceUnit: "month",
+    location: { city: "Gurgaon", area: "DLF Phase 5", address: "Tower 8, The Crest, DLF Phase 5, Gurgaon 122009" },
+    specs: { bedrooms: 3, bathrooms: 3, area: 2200, parking: 2, floor: 15, totalFloors: 28 },
+    features: ["City View", "Smart Appliances", "Modular Kitchen", "Walk-in Wardrobe", "Balcony"],
+    images: [prop3, prop1, prop6],
+    description: "Premium 3 BHK apartment in the iconic The Crest by DLF. Fully furnished with smart appliances, stunning city views, and access to world-class amenities including a rooftop pool and fitness center.",
+    ownerId: "user-seller-001",
+    ownerName: "Vikram Properties",
+    status: "active",
+    verified: true,
+    featured: true,
+    rating: 4.7,
+    reviews: 34,
+    virtualTour: false,
+    postedDate: "2025-04-28",
+    views: 3102,
+    amenities: ["Swimming Pool", "Gym", "Rooftop Lounge", "Concierge", "Security", "Power Backup"]
+  },
+  {
+    id: "prop-004",
+    title: "Glass Tower Commercial Space",
+    type: "commercial",
+    listingType: "rent",
+    price: 250000,
+    priceUnit: "month",
+    location: { city: "Hyderabad", area: "HITEC City", address: "Level 12, Cyber Towers, HITEC City, Hyderabad 500081" },
+    specs: { bedrooms: 0, bathrooms: 6, area: 8500, parking: 20, floor: 12, totalFloors: 22 },
+    features: ["Glass Facade", "Open Plan", "Server Room", "Conference Rooms", "Cafeteria Access"],
+    images: [prop4, prop5, prop1],
+    description: "Premium Grade-A commercial office space in the heart of HITEC City. Ideal for tech companies and startups. Full floor plate with stunning city views, state-of-the-art infrastructure, and flexible configuration.",
+    ownerId: "user-seller-002",
+    ownerName: "Priya Estates",
+    status: "active",
+    verified: true,
+    featured: false,
+    rating: 4.6,
+    reviews: 11,
+    virtualTour: false,
+    postedDate: "2025-02-15",
+    views: 987,
+    amenities: ["24/7 Security", "Power Backup", "Fire Safety", "CCTV", "Broadband", "Food Court", "ATM"]
+  },
+  {
+    id: "prop-005",
+    title: "Luxury Apartment Complex - Koramangala",
+    type: "apartment",
+    listingType: "buy",
+    price: 18500000,
+    location: { city: "Bangalore", area: "Koramangala", address: "12 5th Block, Koramangala, Bangalore 560095" },
+    specs: { bedrooms: 3, bathrooms: 3, area: 1900, parking: 2, floor: 8, totalFloors: 18 },
+    features: ["Corner Unit", "2 Balconies", "Modern Kitchen", "Premium Flooring", "High Ceilings"],
+    images: [prop5, prop2, prop3],
+    description: "Beautifully designed 3 BHK apartment in one of Bangalore's most sought-after neighborhoods. Koramangala offers vibrant urban living with excellent connectivity to tech parks and entertainment hubs.",
+    ownerId: "user-seller-003",
+    ownerName: "Raj Developers",
+    status: "active",
+    verified: true,
+    featured: false,
+    rating: 4.5,
+    reviews: 22,
+    virtualTour: true,
+    postedDate: "2025-04-05",
+    views: 1654,
+    amenities: ["Swimming Pool", "Gym", "Jogging Track", "Kids Play Area", "Multipurpose Hall", "Security"]
+  },
+  {
+    id: "prop-006",
+    title: "Modern Townhouse with Garden",
+    type: "house",
+    listingType: "buy",
+    price: 9800000,
+    location: { city: "Delhi", area: "Dwarka", address: "Sector 12, Dwarka, New Delhi 110075" },
+    specs: { bedrooms: 4, bathrooms: 3, area: 3200, parking: 2, floor: 1, totalFloors: 3 },
+    features: ["Private Garden", "Terrace", "Study Room", "Servant Quarters", "Solar Panels"],
+    images: [prop6, prop4, prop2],
+    description: "A charming 4-bedroom townhouse in Dwarka's prestigious Sector 12. Features a private garden, multi-level living spaces, and a peaceful residential environment with excellent connectivity to Delhi Metro.",
+    ownerId: "user-seller-003",
+    ownerName: "Raj Developers",
+    status: "active",
+    verified: false,
+    featured: false,
+    rating: 4.3,
+    reviews: 8,
+    virtualTour: false,
+    postedDate: "2025-05-01",
+    views: 743,
+    amenities: ["Garden", "Parking", "Security", "Power Backup", "Water Tank"]
+  },
+  {
+    id: "prop-007",
+    title: "Studio Apartment - IT Corridor",
+    type: "studio",
+    listingType: "rent",
+    price: 28000,
+    priceUnit: "month",
+    location: { city: "Pune", area: "Hinjewadi", address: "Phase 1, Hinjewadi IT Park, Pune 411057" },
+    specs: { bedrooms: 1, bathrooms: 1, area: 650, parking: 1, floor: 5, totalFloors: 12 },
+    features: ["Fully Furnished", "High Speed Internet", "Modular Kitchen", "Air Conditioned"],
+    images: [prop3, prop6, prop1],
+    description: "Cozy fully-furnished studio apartment ideal for IT professionals. Located right in the Hinjewadi Phase 1 tech corridor, walking distance to major IT companies. All utilities and high-speed internet included.",
+    ownerId: "user-seller-001",
+    ownerName: "Vikram Properties",
+    status: "active",
+    verified: true,
+    featured: false,
+    rating: 4.4,
+    reviews: 45,
+    virtualTour: false,
+    postedDate: "2025-04-20",
+    views: 4231,
+    amenities: ["Gym", "Security", "CCTV", "Power Backup", "Laundry", "Cafeteria"]
+  },
+  {
+    id: "prop-008",
+    title: "Premium Villa Estate - Chennai",
+    type: "villa",
+    listingType: "buy",
+    price: 32000000,
+    location: { city: "Chennai", area: "Adyar", address: "15 Greenways Road, Adyar, Chennai 600020" },
+    specs: { bedrooms: 6, bathrooms: 5, area: 7200, parking: 4, floor: 1, totalFloors: 2 },
+    features: ["Private Beach Access", "Outdoor Kitchen", "Wine Cellar", "Home Gym", "Staff Quarters"],
+    images: [prop2, prop1, prop5],
+    description: "An exceptional villa estate in Chennai's most prestigious address on Greenways Road. This architectural masterpiece offers private beach access, luxury amenities, and impeccable craftsmanship throughout.",
+    ownerId: "user-seller-002",
+    ownerName: "Priya Estates",
+    status: "active",
+    verified: true,
+    featured: true,
+    rating: 4.9,
+    reviews: 15,
+    virtualTour: true,
+    postedDate: "2025-03-10",
+    views: 2109,
+    amenities: ["Private Beach", "Pool", "Gym", "Home Theater", "Garden", "Security", "Generator"]
+  }
+];
+
+export const FEATURED_PROPERTIES = PROPERTIES.filter(p => p.featured);
+export const BUY_PROPERTIES = PROPERTIES.filter(p => p.listingType === "buy");
+export const RENT_PROPERTIES = PROPERTIES.filter(p => p.listingType === "rent");
+
+export const formatPrice = (price: number, priceUnit?: string): string => {
+  if (price >= 10000000) {
+    return `₹${(price / 10000000).toFixed(1)} Cr`;
+  } else if (price >= 100000) {
+    return `₹${(price / 100000).toFixed(1)} L`;
+  } else {
+    return `₹${price.toLocaleString("en-IN")}${priceUnit ? "/" + priceUnit : ""}`;
+  }
+};
