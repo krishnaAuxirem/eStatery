@@ -5,8 +5,7 @@ import {
   ExternalLink
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -74,7 +73,6 @@ const DashboardLayout = ({
 
   return (
     <div className="min-h-screen bg-[#F5F7FA]">
-      <Navbar />
 
       {/* Mobile overlay */}
       {sidebarOpen && (
@@ -84,16 +82,16 @@ const DashboardLayout = ({
         />
       )}
 
-      <div className="flex" style={{ minHeight: "calc(100vh - 66px)" }}>
+      <div className="flex min-h-screen">
         {/* ─── Sidebar ─────────────────────────────────────── */}
         <aside
           className={cn(
-            "fixed top-[66px] left-0 h-[calc(100vh-66px)] z-40 flex flex-col transition-all duration-300 ease-in-out",
+            "fixed top-0 left-0 h-screen z-40 flex flex-col transition-all duration-300 ease-in-out",
             "bg-white border-r border-[#E2E8F0] shadow-[2px_0_20px_rgba(0,0,0,0.06)]",
             // Mobile
             sidebarOpen ? "translate-x-0" : "-translate-x-full",
             // Desktop
-            "lg:translate-x-0 lg:sticky lg:top-[66px] lg:h-[calc(100vh-66px)] lg:shrink-0",
+            "lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:shrink-0",
             collapsed ? "lg:w-[72px]" : "lg:w-[260px]",
             "w-[260px]"
           )}
@@ -301,8 +299,6 @@ const DashboardLayout = ({
           <main className="flex-1 p-4 sm:p-6">
             {children}
           </main>
-
-          <Footer />
         </div>
       </div>
     </div>

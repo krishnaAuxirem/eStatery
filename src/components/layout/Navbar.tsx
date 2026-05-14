@@ -104,7 +104,7 @@ type MegaKey = "buyers" | "tenants" | "sellers" | "services" | "news" | null;
 
 /* ─── Sub-components ─────────────────────────────────────────────── */
 const MegaMenuWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 z-50 w-[780px] max-w-[96vw]">
+  <div className="absolute top-full left-0 pt-3 z-50 w-[780px] max-w-[calc(100vw-2rem)]">
     <div className="bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.14)] border border-slate-100 overflow-hidden">
       {children}
     </div>
