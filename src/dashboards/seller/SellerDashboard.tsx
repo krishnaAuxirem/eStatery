@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   Building2, TrendingUp, Eye, Users, Plus, Edit, Trash2, User,
   BarChart3, DollarSign, Star, ArrowUpRight, MapPin, CheckCircle2,
@@ -32,7 +31,10 @@ const TABS = [
 const SellerDashboard = () => {
   const { user } = useAuth();
   const { allProperties, deleteProperty } = useProperty();
-  const [activeTab, setActiveTab] = useState("overview");
+  const { tab } = useParams<{ tab: string }>();
+  const navigate = useNavigate();
+  const activeTab = tab || "overview";
+  const setActiveTab = (t: string) => navigate(`/dashboard/seller/${t}`);
 
   const myProps = allProperties.filter(p => p.ownerId === user?.id || p.ownerName === user?.name);
   const totalViews = myProps.reduce((s: number, p: any) => s + p.views, 0);

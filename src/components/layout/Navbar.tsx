@@ -398,10 +398,10 @@ const Navbar = () => {
                 </>
               )}
 
-              {/* Post Property CTA */}
+              {/* Post Property CTA - hidden on smaller screens when authenticated */}
               <Link
                 to="/post-property"
-                className="flex items-center gap-1.5 ml-1 px-4 py-[7px] rounded-xl text-sm font-bold text-white bg-gradient-to-r from-[#1D4ED8] to-[#2563EB] hover:from-[#1e40af] hover:to-[#1D4ED8] shadow-md hover:shadow-[0_4px_20px_rgba(29,78,216,0.35)] transition-all"
+                className="hidden xl:flex items-center gap-1.5 ml-1 px-4 py-[7px] rounded-xl text-sm font-bold text-white bg-gradient-to-r from-[#1D4ED8] to-[#2563EB] hover:from-[#1e40af] hover:to-[#1D4ED8] shadow-md hover:shadow-[0_4px_20px_rgba(29,78,216,0.35)] transition-all"
               >
                 <Zap className="w-3.5 h-3.5" />
                 Post Property

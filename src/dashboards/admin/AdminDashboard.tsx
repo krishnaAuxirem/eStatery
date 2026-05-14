@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Users, Building2, TrendingUp, ShieldCheck, AlertTriangle, BarChart3,
   Settings, FileText, Activity, DollarSign, Eye, CheckCircle2, XCircle,
@@ -48,7 +49,10 @@ const TABS = [
 const AdminDashboard = () => {
   const { user } = useAuth();
   const { allProperties } = useProperty();
-  const [activeTab, setActiveTab] = useState("overview");
+  const { tab } = useParams<{ tab: string }>();
+  const navigate = useNavigate();
+  const activeTab = tab || "overview";
+  const setActiveTab = (t: string) => navigate(`/dashboard/admin/${t}`);
   const [blogs, setBlogs] = useState(BLOGS);
   const [blogForm, setBlogForm] = useState({ title: "", category: "Investment Guide", excerpt: "" });
 

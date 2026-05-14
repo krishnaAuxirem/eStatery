@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   Heart, Calendar, User, Search, TrendingUp, Eye, MapPin, Star,
   Home, Bell, ChevronRight, Clock, CheckCircle2, Zap, BarChart2,
@@ -28,7 +28,10 @@ const TABS = [
 const BuyerDashboard = () => {
   const { user, updateProfile } = useAuth();
   const { allProperties } = useProperty();
-  const [activeTab, setActiveTab] = useState("overview");
+  const { tab } = useParams<{ tab: string }>();
+  const navigate = useNavigate();
+  const activeTab = tab || "overview";
+  const setActiveTab = (t: string) => navigate(`/dashboard/buyer/${t}`);
 
   const bookings = JSON.parse(localStorage.getItem("estatery_bookings") || "[]").filter((b: any) => b.userId === user?.id);
   const savedProps = allProperties.filter(p => user?.savedProperties?.includes(p.id));

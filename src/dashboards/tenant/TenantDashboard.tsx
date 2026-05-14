@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Home, CreditCard, Wrench, User, FileText, CheckCircle2,
   Clock, AlertCircle, Download, Plus, MapPin, Calendar, Shield, Bell
@@ -25,7 +26,10 @@ const TABS = [
 
 const TenantDashboard = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState("overview");
+  const { tab } = useParams<{ tab: string }>();
+  const navigate = useNavigate();
+  const activeTab = tab || "overview";
+  const setActiveTab = (t: string) => navigate(`/dashboard/tenant/${t}`);
   const [maintenanceForm, setMaintenanceForm] = useState({ issue: "", description: "", priority: "medium" });
   const [requests, setRequests] = useState<any[]>(
     JSON.parse(localStorage.getItem("estatery_maintenance") || "[]").filter((r: any) => r.tenantId === user?.id)

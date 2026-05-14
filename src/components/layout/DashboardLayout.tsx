@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import {
   Menu, X, LogOut, ChevronRight, Bell, Settings, Home,
   ExternalLink
@@ -23,9 +23,9 @@ interface DashboardLayoutProps {
   onTabChange: (tab: string) => void;
   tabs: SidebarTab[];
   role: string;
-  roleColor?: string;  // e.g. "from-[#5B21B6] to-[#4338CA]"
+  roleColor?: string;
   roleLabel?: string;
-  roleAccent?: string; // Tailwind class for badge bg
+  roleAccent?: string;
   headerActions?: React.ReactNode;
 }
 

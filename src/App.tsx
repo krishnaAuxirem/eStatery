@@ -62,22 +62,17 @@ const App = () => (
                 <ProtectedRoute><SavedProperties /></ProtectedRoute>
               } />
 
-              {/* Role-based Dashboards */}
-              <Route path="/dashboard/buyer" element={
-                <ProtectedRoute allowedRoles={["buyer"]}><BuyerDashboard /></ProtectedRoute>
-              } />
-              <Route path="/dashboard/seller" element={
-                <ProtectedRoute allowedRoles={["seller"]}><SellerDashboard /></ProtectedRoute>
-              } />
-              <Route path="/dashboard/agent" element={
-                <ProtectedRoute allowedRoles={["agent"]}><AgentDashboard /></ProtectedRoute>
-              } />
-              <Route path="/dashboard/tenant" element={
-                <ProtectedRoute allowedRoles={["tenant"]}><TenantDashboard /></ProtectedRoute>
-              } />
-              <Route path="/dashboard/admin" element={
-                <ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>
-              } />
+              {/* Role-based Dashboards — each tab has its own URL */}
+              <Route path="/dashboard/buyer" element={<ProtectedRoute allowedRoles={["buyer"]}><BuyerDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/buyer/:tab" element={<ProtectedRoute allowedRoles={["buyer"]}><BuyerDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/seller" element={<ProtectedRoute allowedRoles={["seller"]}><SellerDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/seller/:tab" element={<ProtectedRoute allowedRoles={["seller"]}><SellerDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/agent" element={<ProtectedRoute allowedRoles={["agent"]}><AgentDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/agent/:tab" element={<ProtectedRoute allowedRoles={["agent"]}><AgentDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/tenant" element={<ProtectedRoute allowedRoles={["tenant"]}><TenantDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/tenant/:tab" element={<ProtectedRoute allowedRoles={["tenant"]}><TenantDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/admin" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/admin/:tab" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
 
               {/* Catch-all */}
               <Route path="*" element={<NotFound />} />

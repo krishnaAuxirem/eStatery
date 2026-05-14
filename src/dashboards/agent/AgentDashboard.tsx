@@ -1,3 +1,4 @@
+import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   Users, TrendingUp, DollarSign, Calendar, Star, Phone,
@@ -41,7 +42,10 @@ const TABS = [
 
 const AgentDashboard = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState("overview");
+  const { tab } = useParams<{ tab: string }>();
+  const navigate = useNavigate();
+  const activeTab = tab || "overview";
+  const setActiveTab = (t: string) => navigate(`/dashboard/agent/${t}`);
 
   return (
     <DashboardLayout
