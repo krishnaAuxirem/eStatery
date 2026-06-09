@@ -1,7 +1,8 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Clock, Eye, Calendar, Tag, Share2, Twitter, Linkedin } from "lucide-react";
+import { ArrowLeft, Clock, Eye, Calendar, Tag, Share2, FileText } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import EmptyState from "@/components/ui/EmptyState";
 import { BLOGS } from "@/data/blogs";
 import { toast } from "sonner";
 
@@ -12,17 +13,18 @@ const BlogDetail = () => {
 
   if (!blog) {
     return (
-      <div className="min-h-screen bg-brand-bg">
+      <div className="min-h-screen bg-brand-bg flex flex-col">
         <Navbar />
-        <div className="pt-16 flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <div className="text-6xl mb-4">📝</div>
-            <h2 className="text-2xl font-bold text-brand-text mb-2">Article Not Found</h2>
-            <Link to="/blog" className="mt-4 inline-flex items-center gap-2 text-brand-purple hover:underline">
-              <ArrowLeft className="w-4 h-4" /> Back to Blog
-            </Link>
-          </div>
+        <div className="flex-1 flex items-center justify-center p-6">
+          <EmptyState
+            icon={FileText}
+            title="Article Not Found"
+            description="The blog post you are looking for does not exist or has been removed."
+            actionLabel="Back to Blog"
+            actionHref="/blog"
+          />
         </div>
+        <Footer />
       </div>
     );
   }

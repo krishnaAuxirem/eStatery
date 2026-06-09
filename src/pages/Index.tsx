@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Play, Star, TrendingUp, Shield, Brain, Zap, MapPin, ChevronRight } from "lucide-react";
+import { ArrowRight, Star, TrendingUp, Shield, Brain, Zap, MapPin, ChevronRight, Building2, Home, Warehouse, Compass, Building, Ruler } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import SearchBar from "@/components/features/SearchBar";
 import StatsCounter from "@/components/features/StatsCounter";
 import PropertyCard from "@/components/features/PropertyCard";
 import SectionHeader from "@/components/features/SectionHeader";
-import { FEATURED_PROPERTIES, PROPERTIES } from "@/data/properties";
+import { FEATURED_PROPERTIES } from "@/data/properties";
 import { AGENTS } from "@/data/agents";
 import { BLOGS } from "@/data/blogs";
 import heroBg from "@/assets/hero-bg.jpg";
@@ -14,8 +14,8 @@ import cityMumbai from "@/assets/city-mumbai.jpg";
 import cityBangalore from "@/assets/city-bangalore.jpg";
 import cityDelhi from "@/assets/city-delhi.jpg";
 import cityHyderabad from "@/assets/city-hyderabad.jpg";
-import { formatPrice } from "@/data/properties";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 const LOCATIONS = [
   { city: "Mumbai", properties: 34218, image: cityMumbai, trend: "+12.4%" },
@@ -50,12 +50,12 @@ const TESTIMONIALS = [
 ];
 
 const CATEGORIES = [
-  { label: "Apartments", count: 48320, icon: "🏢", color: "bg-blue-50 border-blue-100", href: "/properties?category=apartment" },
-  { label: "Villas", count: 12480, icon: "🏡", color: "bg-emerald-50 border-emerald-100", href: "/properties?category=villa" },
-  { label: "Commercial", count: 8940, icon: "🏬", color: "bg-purple-50 border-purple-100", href: "/properties?category=commercial" },
-  { label: "Penthouses", count: 3210, icon: "🌆", color: "bg-amber-50 border-amber-100", href: "/properties?category=penthouse" },
-  { label: "Studios", count: 18720, icon: "🏠", color: "bg-pink-50 border-pink-100", href: "/properties?category=studio" },
-  { label: "Plots", count: 9840, icon: "📐", color: "bg-indigo-50 border-indigo-100", href: "/properties?category=plot" }
+  { label: "Apartments", count: 48320, icon: Building2, color: "bg-blue-50 border-blue-100 text-[#1D4ED8]", href: "/properties?category=apartment" },
+  { label: "Villas", count: 12480, icon: Home, color: "bg-emerald-50 border-emerald-100 text-emerald-600", href: "/properties?category=villa" },
+  { label: "Commercial", count: 8940, icon: Warehouse, color: "bg-purple-50 border-purple-100 text-purple-600", href: "/properties?category=commercial" },
+  { label: "Penthouses", count: 3210, icon: Compass, color: "bg-amber-50 border-amber-100 text-amber-600", href: "/properties?category=penthouse" },
+  { label: "Studios", count: 18720, icon: Building, color: "bg-pink-50 border-pink-100 text-pink-600", href: "/properties?category=studio" },
+  { label: "Plots", count: 9840, icon: Ruler, color: "bg-indigo-50 border-indigo-100 text-indigo-600", href: "/properties?category=plot" }
 ];
 
 const FAQS = [
@@ -74,86 +74,130 @@ const Index = () => {
       <Navbar />
 
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex items-center overflow-hidden pt-16">
+      <section className="relative min-h-screen flex items-center overflow-hidden pt-20">
         {/* BG */}
         <div className="absolute inset-0">
           <img src={heroBg} alt="eStatery Hero" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0f0a2e]/90 via-[#1a0845]/75 to-[#0d0630]/60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0f0a2e]/80 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0f0a2e]/95 via-[#1a0845]/85 to-[#0d0630]/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0f0a2e]/90 via-transparent to-transparent" />
         </div>
 
         {/* Animated orbs */}
         <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-indigo-600/15 rounded-full blur-3xl animate-float" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-24 lg:py-32">
-          <div className="max-w-3xl">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-8">
-              <span className="w-2 h-2 rounded-full bg-brand-emerald animate-pulse" />
-              AI-Powered Real Estate Intelligence Platform
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-28 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Left Column: Content + CTAs */}
+            <div className="lg:col-span-7 space-y-6">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium">
+                <span className="w-2 h-2 rounded-full bg-brand-emerald animate-pulse" />
+                AI-Powered Real Estate Intelligence Platform
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                Discover Smart Real Estate with{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-indigo-300">
+                  AI-Powered Property Intelligence
+                </span>
+              </h1>
+
+              <p className="text-lg text-white/75 leading-relaxed max-w-xl">
+                Buy, sell, rent, and manage modern properties through a premium AI-driven real estate ecosystem trusted by 2M+ customers across India.
+              </p>
+
+              <div className="w-full pt-2">
+                <SearchBar variant="hero" />
+              </div>
+
+              <div className="flex flex-wrap gap-4 pt-2">
+                <Link
+                  to="/properties"
+                  className="flex items-center gap-2 px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#1D4ED8] to-[#2563EB] text-white font-semibold hover:shadow-glow hover:scale-[1.02] transition-all duration-200"
+                >
+                  Explore Properties <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  to="/post-property"
+                  className="flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold hover:bg-white/20 transition-all duration-200"
+                >
+                  Post Property
+                </Link>
+              </div>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-              Discover Smart Real Estate with{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-indigo-300">
-                AI-Powered Property Intelligence
-              </span>
-            </h1>
-
-            <p className="text-lg text-white/75 leading-relaxed mb-8 max-w-xl">
-              Buy, sell, rent, and manage modern properties through a premium AI-driven real estate ecosystem trusted by 2M+ customers across India.
-            </p>
-
-            <div className="mb-10">
-              <SearchBar variant="hero" />
-            </div>
-
-            <div className="flex flex-wrap gap-4">
-              <Link
-                to="/properties"
-                className="flex items-center gap-2 px-7 py-3.5 rounded-xl bg-gradient-to-r from-brand-purple to-brand-indigo text-white font-semibold hover:shadow-glow hover:scale-[1.02] transition-all duration-200"
-              >
-                Explore Properties <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                to="/post-property"
-                className="flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold hover:bg-white/20 transition-all duration-200"
-              >
-                Post Property
-              </Link>
-            </div>
-          </div>
-
-          {/* Floating Stats Cards */}
-          <div className="hidden xl:flex gap-4 absolute right-0 top-1/2 -translate-y-1/2 flex-col">
-            <div className="bg-white/95 backdrop-blur-xl rounded-2xl p-4 shadow-brand-lg animate-float w-52">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-green-600" />
+            {/* Right Column: Analytics Cards & AI Matches */}
+            <div className="lg:col-span-5 flex flex-col gap-5 relative">
+              {/* AI Matching Simulator Widget */}
+              <div className="bg-white/95 backdrop-blur-xl rounded-2xl p-6 shadow-brand-lg border border-slate-100 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                    <Brain className="w-5 h-5 text-[#1D4ED8]" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-800 text-sm">eStatery AI Matcher</h3>
+                    <p className="text-xs text-slate-400">Match Accuracy: 96%</p>
+                  </div>
                 </div>
+                <div className="space-y-3">
+                  <div className="text-xs text-slate-500 bg-slate-50 p-2.5 rounded-lg border border-slate-100 leading-relaxed italic">
+                    "Finding 3 BHK apartments in Bangalore under ₹1.5 Cr with high appreciation potential..."
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-[#1D4ED8] to-[#10B981] rounded-full" style={{ width: "96%" }} />
+                    </div>
+                    <span className="text-xs font-bold text-[#1D4ED8]">96%</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats Appreciation Cards */}
+              <div className="flex gap-4">
+                <div className="flex-1 bg-white/95 backdrop-blur-xl rounded-2xl p-5 shadow-brand-lg border border-slate-100 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
+                    <TrendingUp className="w-5 h-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-400">Appreciation</div>
+                    <div className="text-lg font-extrabold text-slate-800">+14.2%</div>
+                  </div>
+                </div>
+
+                <div className="flex-1 bg-white/95 backdrop-blur-xl rounded-2xl p-5 shadow-brand-lg border border-slate-100 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                    <Shield className="w-5 h-5 text-[#1D4ED8]" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-400">Verified Ads</div>
+                    <div className="text-lg font-extrabold text-slate-800">100%</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Star Ratings card */}
+              <div className="bg-white/95 backdrop-blur-xl rounded-2xl p-5 shadow-brand-lg border border-slate-100 flex items-center justify-between gap-4">
                 <div>
-                  <div className="text-xs text-brand-muted">Avg. Appreciation</div>
-                  <div className="text-lg font-bold text-brand-text">+14.2%</div>
+                  <div className="flex gap-1 mb-1">
+                    {[1, 2, 3, 4, 5].map(i => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  <div className="text-sm font-bold text-slate-800">4.9 / 5 Rating</div>
+                  <div className="text-xs text-slate-400">from 280K+ customer reviews</div>
+                </div>
+                <div className="flex -space-x-3 overflow-hidden shrink-0">
+                  {["A", "R", "S"].map((initial, i) => (
+                    <div
+                      key={i}
+                      className="inline-block h-8 w-8 rounded-full ring-2 ring-white bg-gradient-to-br from-[#1D4ED8] to-[#2563EB] flex items-center justify-center text-[10px] font-bold text-white shadow-sm"
+                    >
+                      {initial}
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
-            <div className="bg-white/95 backdrop-blur-xl rounded-2xl p-4 shadow-brand-lg animate-float-delayed w-52">
-              <div className="text-xs text-brand-muted mb-1">AI Match Score</div>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 h-2 bg-gray-100 rounded-full">
-                  <div className="h-2 bg-gradient-to-r from-brand-purple to-brand-emerald rounded-full" style={{ width: "96%" }} />
-                </div>
-                <span className="text-sm font-bold text-brand-purple">96%</span>
-              </div>
-              <div className="text-xs text-brand-muted mt-1">Property match accuracy</div>
-            </div>
-            <div className="bg-white/95 backdrop-blur-xl rounded-2xl p-4 shadow-brand-lg animate-float-slow w-52">
-              <div className="flex items-center gap-2 mb-1">
-                {[1,2,3,4,5].map(i => <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />)}
-              </div>
-              <div className="text-sm font-semibold text-brand-text">4.9/5 Rating</div>
-              <div className="text-xs text-brand-muted">from 280K+ reviews</div>
             </div>
           </div>
         </div>
@@ -172,7 +216,7 @@ const Index = () => {
               subtitle="Our AI curates the most sought-after properties based on value, growth potential, and lifestyle fit."
               centered={false}
             />
-            <Link to="/properties" className="hidden sm:flex items-center gap-2 text-brand-purple font-semibold hover:gap-3 transition-all">
+            <Link to="/properties" className="hidden sm:flex items-center gap-2 text-[#1D4ED8] font-semibold hover:gap-3 transition-all">
               View All <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -182,7 +226,7 @@ const Index = () => {
             ))}
           </div>
           <div className="text-center mt-8">
-            <Link to="/properties" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-brand-purple to-brand-indigo text-white font-semibold hover:shadow-brand transition-all">
+            <Link to="/properties" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#1D4ED8] to-[#2563EB] text-white font-semibold hover:shadow-brand transition-all">
               Explore All Properties <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -234,19 +278,25 @@ const Index = () => {
             subtitle="Browse through India's most comprehensive property category database."
           />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {CATEGORIES.map(cat => (
-              <Link
-                key={cat.label}
-                to={cat.href}
-                className={`flex flex-col items-center gap-3 p-5 rounded-2xl border ${cat.color} hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300 group`}
-              >
-                <span className="text-4xl">{cat.icon}</span>
-                <div className="text-center">
-                  <div className="font-semibold text-brand-text text-sm group-hover:text-brand-purple transition-colors">{cat.label}</div>
-                  <div className="text-brand-muted text-xs mt-0.5">{(cat.count / 1000).toFixed(0)}K+ listings</div>
-                </div>
-              </Link>
-            ))}
+            {CATEGORIES.map(cat => {
+              const IconComponent = cat.icon;
+              return (
+                <Link
+                  key={cat.label}
+                  to={cat.href}
+                  className={cn(
+                    "flex flex-col items-center gap-3 p-5 rounded-2xl border hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300 group",
+                    cat.color.split(" ")[0], cat.color.split(" ")[1]
+                  )}
+                >
+                  <IconComponent className={cn("w-10 h-10 mb-1", cat.color.split(" ")[2])} />
+                  <div className="text-center">
+                    <div className="font-semibold text-brand-text text-sm group-hover:text-[#1D4ED8] transition-colors">{cat.label}</div>
+                    <div className="text-brand-muted text-xs mt-0.5">{(cat.count / 1000).toFixed(0)}K+ listings</div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -284,7 +334,7 @@ const Index = () => {
               subtitle="Verified professionals with proven track records in India's premium markets."
               centered={false}
             />
-            <Link to="/agents" className="hidden sm:flex items-center gap-2 text-brand-purple font-semibold hover:gap-3 transition-all">
+            <Link to="/agents" className="hidden sm:flex items-center gap-2 text-[#1D4ED8] font-semibold hover:gap-3 transition-all">
               All Agents <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -295,7 +345,7 @@ const Index = () => {
                   <img src={agent.avatar} alt={agent.name} className="w-16 h-16 rounded-2xl object-cover" />
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-brand-text group-hover:text-brand-purple transition-colors">{agent.name}</h3>
+                      <h3 className="font-bold text-brand-text group-hover:text-[#1D4ED8] transition-colors">{agent.name}</h3>
                       {agent.verified && <span className="text-xs bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full font-medium">✓ Verified</span>}
                     </div>
                     <p className="text-brand-muted text-sm">{agent.location}</p>
@@ -345,7 +395,7 @@ const Index = () => {
                 </div>
                 <p className="text-brand-muted text-sm leading-relaxed mb-5">"{t.text}"</p>
                 <div className="flex items-center gap-3 border-t border-brand-border pt-4">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-purple to-brand-indigo flex items-center justify-center text-white font-bold">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#1D4ED8] to-[#2563EB] flex items-center justify-center text-white font-bold">
                     {t.avatar}
                   </div>
                   <div>
@@ -369,7 +419,7 @@ const Index = () => {
               subtitle="Expert analysis, market reports, and data-driven investment insights."
               centered={false}
             />
-            <Link to="/blog" className="hidden sm:flex items-center gap-2 text-brand-purple font-semibold hover:gap-3 transition-all">
+            <Link to="/blog" className="hidden sm:flex items-center gap-2 text-[#1D4ED8] font-semibold hover:gap-3 transition-all">
               All Articles <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -379,7 +429,7 @@ const Index = () => {
                 <div className="relative h-44 overflow-hidden">
                   <img src={blog.image} alt={blog.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute top-3 left-3">
-                    <span className="px-2.5 py-1 rounded-lg bg-brand-purple text-white text-xs font-semibold">{blog.category}</span>
+                    <span className="px-2.5 py-1 rounded-lg bg-[#1D4ED8] text-white text-xs font-semibold">{blog.category}</span>
                   </div>
                 </div>
                 <div className="p-5">
@@ -390,7 +440,7 @@ const Index = () => {
                     <span>·</span>
                     <span>{new Date(blog.publishedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</span>
                   </div>
-                  <h3 className="font-bold text-brand-text leading-snug group-hover:text-brand-purple transition-colors line-clamp-2">{blog.title}</h3>
+                  <h3 className="font-bold text-brand-text leading-snug group-hover:text-[#1D4ED8] transition-colors line-clamp-2">{blog.title}</h3>
                   <p className="text-brand-muted text-sm mt-2 line-clamp-2">{blog.excerpt}</p>
                 </div>
               </Link>
@@ -415,7 +465,7 @@ const Index = () => {
                   className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 transition-colors"
                 >
                   <span className="font-semibold text-brand-text text-sm">{faq.q}</span>
-                  <ChevronRight className={`w-5 h-5 text-brand-purple shrink-0 transition-transform duration-200 ${openFaq === i ? "rotate-90" : ""}`} />
+                  <ChevronRight className={`w-5 h-5 text-[#1D4ED8] shrink-0 transition-transform duration-200 ${openFaq === i ? "rotate-90" : ""}`} />
                 </button>
                 {openFaq === i && (
                   <div className="px-6 pb-4 text-brand-muted text-sm leading-relaxed border-t border-brand-border">
@@ -429,14 +479,14 @@ const Index = () => {
       </section>
 
       {/* CTA SECTION */}
-      <section className="py-16 bg-gradient-to-r from-brand-purple to-brand-indigo">
+      <section className="py-16 bg-gradient-to-r from-[#1D4ED8] to-[#2563EB]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center text-white">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">Ready to Find Your Perfect Property?</h2>
           <p className="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
             Join 2 million+ property seekers who trust eStatery's AI-powered platform to discover their ideal home or investment.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link to="/register" className="px-8 py-3.5 rounded-xl bg-white text-brand-purple font-bold hover:shadow-lg hover:scale-[1.02] transition-all">
+            <Link to="/register" className="px-8 py-3.5 rounded-xl bg-white text-[#1D4ED8] font-bold hover:shadow-lg hover:scale-[1.02] transition-all">
               Get Started Free
             </Link>
             <Link to="/properties" className="px-8 py-3.5 rounded-xl bg-white/15 border border-white/30 text-white font-bold hover:bg-white/25 transition-all">

@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Mail, Lock, User, Phone, UserPlus, CheckCircle } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, Phone, UserPlus, CheckCircle, Home, Building2, UserCheck, Key } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import type { UserRole } from "@/types";
 import { toast } from "sonner";
 import heroBg from "@/assets/hero-bg.jpg";
 import { cn } from "@/lib/utils";
 
-const ROLES: { value: UserRole; label: string; desc: string; icon: string }[] = [
-  { value: "buyer", label: "Buyer / Investor", desc: "Looking to buy or invest in properties", icon: "🏠" },
-  { value: "seller", label: "Property Owner", desc: "List and manage your properties", icon: "🏢" },
-  { value: "agent", label: "Real Estate Agent", desc: "Manage clients and multiple listings", icon: "👔" },
-  { value: "tenant", label: "Tenant", desc: "Find and manage rental properties", icon: "🔑" }
+const ROLES: { value: UserRole; label: string; desc: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { value: "buyer", label: "Buyer / Investor", desc: "Looking to buy or invest in properties", icon: Home },
+  { value: "seller", label: "Property Owner", desc: "List and manage your properties", icon: Building2 },
+  { value: "agent", label: "Real Estate Agent", desc: "Manage clients and multiple listings", icon: UserCheck },
+  { value: "tenant", label: "Tenant", desc: "Find and manage rental properties", icon: Key }
 ];
 
 const Register = () => {
@@ -92,22 +92,27 @@ const Register = () => {
             <div className="space-y-4">
               <p className="text-sm font-semibold text-brand-text mb-3">I am a...</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {ROLES.map(r => (
-                  <button
-                    key={r.value}
-                    onClick={() => setRole(r.value)}
-                    className={cn(
-                      "p-4 rounded-2xl border-2 text-left transition-all hover:-translate-y-0.5",
-                      role === r.value
-                        ? "border-brand-purple bg-purple-50"
-                        : "border-brand-border bg-white hover:border-purple-200"
-                    )}
-                  >
-                    <div className="text-2xl mb-2">{r.icon}</div>
-                    <div className={cn("font-semibold text-sm", role === r.value ? "text-brand-purple" : "text-brand-text")}>{r.label}</div>
-                    <div className="text-xs text-brand-muted mt-0.5">{r.desc}</div>
-                  </button>
-                ))}
+                {ROLES.map(r => {
+                  const IconComponent = r.icon;
+                  return (
+                    <button
+                      key={r.value}
+                      onClick={() => setRole(r.value)}
+                      className={cn(
+                        "p-4 rounded-2xl border-2 text-left transition-all hover:-translate-y-0.5",
+                        role === r.value
+                          ? "border-brand-purple bg-purple-50"
+                          : "border-brand-border bg-white hover:border-purple-200"
+                      )}
+                    >
+                      <div className="text-xl mb-2 text-[#1D4ED8]">
+                        <IconComponent className="w-5 h-5" />
+                      </div>
+                      <div className={cn("font-semibold text-sm", role === r.value ? "text-brand-purple" : "text-brand-text")}>{r.label}</div>
+                      <div className="text-xs text-brand-muted mt-0.5">{r.desc}</div>
+                    </button>
+                  );
+                })}
               </div>
               <button
                 onClick={() => setStep(2)}

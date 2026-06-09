@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { SlidersHorizontal, Grid3X3, List, X, ChevronDown } from "lucide-react";
+import { SlidersHorizontal, Grid3X3, List, X, ChevronDown, Building2 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PropertyCard from "@/components/features/PropertyCard";
 import SearchBar from "@/components/features/SearchBar";
+import EmptyState from "@/components/ui/EmptyState";
 import { useProperty } from "@/context/PropertyContext";
 import { cn } from "@/lib/utils";
 
@@ -187,14 +188,13 @@ const Properties = () => {
               </div>
 
               {sortedProperties.length === 0 ? (
-                <div className="text-center py-16 bg-white rounded-2xl border border-brand-border">
-                  <div className="text-5xl mb-4">🏠</div>
-                  <h3 className="text-lg font-bold text-brand-text mb-2">No Properties Found</h3>
-                  <p className="text-brand-muted text-sm mb-6">Try adjusting your filters to see more results.</p>
-                  <button onClick={() => setFilters({ listingType: "all", type: "all", city: "all" })} className="px-6 py-2.5 rounded-xl bg-brand-purple text-white font-semibold text-sm">
-                    Clear Filters
-                  </button>
-                </div>
+                <EmptyState
+                  icon={Building2}
+                  title="No Properties Found"
+                  description="We couldn't find any properties matching your current filter selections. Try clearing your filters or adjusting your search queries."
+                  actionLabel="Reset Filters"
+                  onActionClick={() => setFilters({ listingType: "all", type: "all", city: "all", minPrice: 0, maxPrice: 999999999, bedrooms: 0, minArea: 0, search: "" })}
+                />
               ) : (
                 <div className={cn(
                   "grid gap-5",

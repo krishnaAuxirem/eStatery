@@ -4,11 +4,12 @@ import {
   Menu, X, ChevronDown, Home, Search, Building2, Users, Brain,
   BookOpen, Phone, LogIn, UserPlus, LayoutDashboard, LogOut,
   Bell, Heart, User, Briefcase, TrendingUp, MapPin, Star,
-  Landmark, BarChart2, FileText, Calculator, Zap, ArrowRight,
-  Shield, HelpCircle, MessageSquare, CheckCircle2
+  Landmark, FileText, Zap, ArrowRight, Shield, HelpCircle,
+  MessageSquare, CheckCircle2, Calculator, Settings
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
+import type { User as UserType } from "@/types";
 
 /* ─── Mega Menu Data ──────────────────────────────────────────── */
 const FOR_BUYERS = {
@@ -27,7 +28,7 @@ const FOR_BUYERS = {
       items: [
         { label: "Price Trends", href: "/ai-insights", icon: TrendingUp, desc: "Market analysis & forecasts" },
         { label: "AI Recommendations", href: "/ai-insights", icon: Brain, desc: "Personalised property picks" },
-        { label: "Investment Guide", href: "/ai-insights#guide", icon: BarChart2, desc: "ROI & yield calculator" },
+        { label: "Investment Guide", href: "/ai-insights#guide", icon: Landmark, desc: "ROI & yield calculator" },
         { label: "Area Reports", href: "/ai-insights", icon: MapPin, desc: "Locality insights & ratings" },
       ],
     },
@@ -74,7 +75,7 @@ const FOR_SELLERS = {
       title: "Seller Resources",
       items: [
         { label: "Legal Guidance", href: "/contact", icon: Shield, desc: "Documents, RERA & more" },
-        { label: "Market Reports", href: "/ai-insights", icon: BarChart2, desc: "City-wise trend reports" },
+        { label: "Market Reports", href: "/ai-insights", icon: Landmark, desc: "City-wise trend reports" },
         { label: "Seller FAQs", href: "/contact", icon: HelpCircle, desc: "Common seller questions" },
         { label: "Success Stories", href: "/blog", icon: Star, desc: "Hear from top sellers" },
       ],
@@ -84,6 +85,8 @@ const FOR_SELLERS = {
 };
 
 const SERVICES_MENU = [
+  { label: "Verified Agents", icon: Users, desc: "Find expert property advisors", href: "/agents" },
+  { label: "Contact Us", icon: Phone, desc: "Talk to our customer support", href: "/contact" },
   { label: "Home Loans", icon: Landmark, desc: "Compare rates & apply", href: "/ai-insights" },
   { label: "Legal Services", icon: Shield, desc: "Title check, drafting", href: "/contact" },
   { label: "Virtual Tours", icon: Brain, desc: "3D walkthroughs", href: "/properties" },
@@ -99,10 +102,8 @@ const NEWS_MENU = [
   { label: "Video Tours", href: "/properties", icon: Brain },
 ];
 
-/* ─── Types ─────────────────────────────────────────────────────── */
 type MegaKey = "buyers" | "tenants" | "sellers" | "services" | "news" | null;
 
-/* ─── Sub-components ─────────────────────────────────────────────── */
 const MegaMenuWrapper = ({ children }: { children: React.ReactNode }) => (
   <div className="absolute top-full left-0 pt-3 z-50 w-[780px] max-w-[calc(100vw-2rem)]">
     <div className="bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.14)] border border-slate-100 overflow-hidden">
@@ -152,7 +153,6 @@ const SectionedMega = ({ data, accentColor = "text-[#1D4ED8]" }: SectionedMegaPr
   </div>
 );
 
-/* ─── Main Navbar ─────────────────────────────────────────────────── */
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -195,12 +195,16 @@ const Navbar = () => {
     return routes[user.role] || "/dashboard/buyer";
   };
 
+  const getProfileLink = () => {
+    if (!user) return "/login";
+    return `/dashboard/${user.role}/profile`;
+  };
+
   const handleLogout = () => {
     logout();
     navigate("/");
   };
 
-  /* ── Nav item style helpers ── */
   const navItemCls = (key?: MegaKey) =>
     cn(
       "flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-150 select-none cursor-pointer whitespace-nowrap",
@@ -219,10 +223,8 @@ const Navbar = () => {
             : "bg-white border-b border-slate-100"
         )}
       >
-        {/* ── Top Bar ──────────────────────────────────── */}
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-[66px] gap-4">
-
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1D4ED8] to-[#2563EB] flex items-center justify-center shadow-md group-hover:shadow-[0_4px_20px_rgba(29,78,216,0.4)] transition-shadow">
@@ -237,11 +239,7 @@ const Navbar = () => {
             {/* ── Desktop Nav Links ── */}
             <div className="hidden lg:flex items-center gap-1 flex-1 justify-center">
               {/* For Buyers */}
-              <div
-                className="relative"
-                onMouseEnter={() => openMega("buyers")}
-                onMouseLeave={closeMega}
-              >
+              <div className="relative" onMouseEnter={() => openMega("buyers")} onMouseLeave={closeMega}>
                 <button className={navItemCls("buyers")}>
                   For Buyers <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", activeMega === "buyers" && "rotate-180")} />
                 </button>
@@ -258,11 +256,7 @@ const Navbar = () => {
               </div>
 
               {/* For Tenants */}
-              <div
-                className="relative"
-                onMouseEnter={() => openMega("tenants")}
-                onMouseLeave={closeMega}
-              >
+              <div className="relative" onMouseEnter={() => openMega("tenants")} onMouseLeave={closeMega}>
                 <button className={navItemCls("tenants")}>
                   For Tenants <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", activeMega === "tenants" && "rotate-180")} />
                 </button>
@@ -279,11 +273,7 @@ const Navbar = () => {
               </div>
 
               {/* For Sellers */}
-              <div
-                className="relative"
-                onMouseEnter={() => openMega("sellers")}
-                onMouseLeave={closeMega}
-              >
+              <div className="relative" onMouseEnter={() => openMega("sellers")} onMouseLeave={closeMega}>
                 <button className={navItemCls("sellers")}>
                   For Sellers <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", activeMega === "sellers" && "rotate-180")} />
                 </button>
@@ -300,17 +290,13 @@ const Navbar = () => {
               </div>
 
               {/* Services */}
-              <div
-                className="relative"
-                onMouseEnter={() => openMega("services")}
-                onMouseLeave={closeMega}
-              >
+              <div className="relative" onMouseEnter={() => openMega("services")} onMouseLeave={closeMega}>
                 <button className={navItemCls("services")}>
                   Services <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", activeMega === "services" && "rotate-180")} />
                 </button>
                 {activeMega === "services" && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 z-50 w-72">
-                    <div className="bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.14)] border border-slate-100 p-3">
+                    <div className="bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.14)] border border-slate-100 p-3 max-h-[420px] overflow-y-auto">
                       {SERVICES_MENU.map(s => (
                         <Link
                           key={s.label}
@@ -322,7 +308,7 @@ const Navbar = () => {
                           </div>
                           <div>
                             <p className="text-sm font-semibold text-slate-800 group-hover:text-[#1D4ED8] leading-tight">{s.label}</p>
-                            <p className="text-xs text-slate-400">{s.desc}</p>
+                            <p className="text-xs text-slate-400 mt-0.5">{s.desc}</p>
                           </div>
                         </Link>
                       ))}
@@ -332,11 +318,7 @@ const Navbar = () => {
               </div>
 
               {/* News & Guide */}
-              <div
-                className="relative"
-                onMouseEnter={() => openMega("news")}
-                onMouseLeave={closeMega}
-              >
+              <div className="relative" onMouseEnter={() => openMega("news")} onMouseLeave={closeMega}>
                 <button className={navItemCls("news")}>
                   News &amp; Guide <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", activeMega === "news" && "rotate-180")} />
                 </button>
@@ -357,24 +339,21 @@ const Navbar = () => {
                   </div>
                 )}
               </div>
-
-              <Link to="/agents" className={navItemCls()}>Agents</Link>
-              <Link to="/contact" className={navItemCls()}>Contact</Link>
             </div>
 
-            {/* ── Right Side Actions ── */}
-            <div className="hidden lg:flex items-center gap-2 shrink-0">
+            {/* ── Desktop Right Actions ── */}
+            <div className="hidden lg:flex items-center gap-3 shrink-0">
               {isAuthenticated && user ? (
                 <>
-                  {/* Notification bell */}
+                  {/* Notifications */}
                   <button className="relative p-2 rounded-lg text-slate-500 hover:text-[#1D4ED8] hover:bg-blue-50 transition-colors">
                     <Bell className="w-5 h-5" />
                     <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 border-2 border-white" />
                   </button>
-                  {/* Dashboard */}
+                  {/* Dashboard link */}
                   <Link
                     to={getDashboardLink()}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-[#1D4ED8] bg-blue-50 hover:bg-blue-100 transition-colors border border-blue-100"
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold text-[#1D4ED8] bg-blue-50 hover:bg-blue-100 transition-colors border border-blue-100"
                   >
                     <LayoutDashboard className="w-4 h-4" /> Dashboard
                   </Link>
@@ -393,15 +372,15 @@ const Navbar = () => {
                     to="/register"
                     className="flex items-center gap-1.5 px-4 py-[7px] rounded-xl text-sm font-semibold text-white bg-[#1D4ED8] hover:bg-blue-800 transition-all shadow-sm"
                   >
-                    <UserPlus className="w-4 h-4" /> Register
+                    <UserPlus className="w-4 h-4" /> Sign Up
                   </Link>
                 </>
               )}
 
-              {/* Post Property CTA - hidden on smaller screens when authenticated */}
+              {/* Post Property - always aligned next to auth states */}
               <Link
                 to="/post-property"
-                className="hidden xl:flex items-center gap-1.5 ml-1 px-4 py-[7px] rounded-xl text-sm font-bold text-white bg-gradient-to-r from-[#1D4ED8] to-[#2563EB] hover:from-[#1e40af] hover:to-[#1D4ED8] shadow-md hover:shadow-[0_4px_20px_rgba(29,78,216,0.35)] transition-all"
+                className="flex items-center gap-1.5 px-4 py-[7px] rounded-xl text-sm font-bold text-white bg-gradient-to-r from-[#1D4ED8] to-[#2563EB] hover:from-[#1e40af] hover:to-[#1D4ED8] shadow-md hover:shadow-[0_4px_20px_rgba(29,78,216,0.35)] transition-all"
               >
                 <Zap className="w-3.5 h-3.5" />
                 Post Property
@@ -454,11 +433,33 @@ const Navbar = () => {
                 </div>
               ))}
 
+              {/* Collapsible Services section on mobile */}
+              <div>
+                <button
+                  onClick={() => setMobileExpanded(mobileExpanded === "services" ? null : "services")}
+                  className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-50 transition-colors"
+                >
+                  Services
+                  <ChevronDown className={cn("w-4 h-4 text-slate-400 transition-transform", mobileExpanded === "services" && "rotate-180")} />
+                </button>
+                {mobileExpanded === "services" && (
+                  <div className="ml-2 mb-2 space-y-1 bg-slate-50 rounded-xl p-2">
+                    {SERVICES_MENU.map(s => (
+                      <Link
+                        key={s.label}
+                        to={s.href}
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white text-sm text-slate-700 hover:text-[#1D4ED8] transition-colors"
+                      >
+                        <s.icon className="w-4 h-4 text-[#1D4ED8] shrink-0" />
+                        {s.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               {[
-                { label: "Services", href: "/contact" },
-                { label: "Agents", href: "/agents" },
-                { label: "News & Guide", href: "/blog" },
-                { label: "Contact", href: "/contact" },
+                { label: "News & Guide", href: "/blog" }
               ].map(link => (
                 <Link
                   key={link.label}
@@ -481,6 +482,9 @@ const Navbar = () => {
                     </div>
                     <Link to={getDashboardLink()} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50 text-[#1D4ED8] font-semibold text-sm">
                       <LayoutDashboard className="w-4 h-4" /> Go to Dashboard
+                    </Link>
+                    <Link to={getProfileLink()} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-50 text-slate-700 font-semibold text-sm">
+                      <User className="w-4 h-4" /> My Profile
                     </Link>
                     <button onClick={handleLogout} className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 font-semibold text-sm transition-colors">
                       <LogOut className="w-4 h-4" /> Sign Out
@@ -513,7 +517,7 @@ const Navbar = () => {
 
 /* ─── UserDropdown ──────────────────────────────────────────────── */
 interface UserDropdownProps {
-  user: any;
+  user: UserType;
   getDashboardLink: () => string;
   handleLogout: () => void;
 }
@@ -529,6 +533,19 @@ const UserDropdown = ({ user, getDashboardLink, handleLogout }: UserDropdownProp
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  if (!user) return null;
+
+  const getSettingsLink = () => {
+    if (user.role === "admin") return "/dashboard/admin/settings";
+    return `/dashboard/${user.role}/profile`;
+  };
+
+  const getListingsLink = () => {
+    if (user.role === "seller") return "/dashboard/seller/listings";
+    if (user.role === "admin") return "/dashboard/admin/properties";
+    return "";
+  };
 
   return (
     <div ref={ref} className="relative">
@@ -554,14 +571,22 @@ const UserDropdown = ({ user, getDashboardLink, handleLogout }: UserDropdownProp
               <Link to={getDashboardLink()} onClick={() => setOpen(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:text-[#1D4ED8] hover:bg-blue-50 font-medium transition-colors">
                 <LayoutDashboard className="w-4 h-4 text-[#1D4ED8]" /> Dashboard
               </Link>
-              <Link to="/profile" onClick={() => setOpen(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:text-[#1D4ED8] hover:bg-blue-50 font-medium transition-colors">
+              <Link to={`/dashboard/${user.role}/profile`} onClick={() => setOpen(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:text-[#1D4ED8] hover:bg-blue-50 font-medium transition-colors">
                 <User className="w-4 h-4 text-[#1D4ED8]" /> My Profile
               </Link>
               <Link to="/saved-properties" onClick={() => setOpen(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:text-[#1D4ED8] hover:bg-blue-50 font-medium transition-colors">
                 <Heart className="w-4 h-4 text-[#1D4ED8]" /> Saved Properties
               </Link>
+              {getListingsLink() && (
+                <Link to={getListingsLink()} onClick={() => setOpen(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:text-[#1D4ED8] hover:bg-blue-50 font-medium transition-colors">
+                  <Building2 className="w-4 h-4 text-[#1D4ED8]" /> My Listings
+                </Link>
+              )}
+              <Link to={getSettingsLink()} onClick={() => setOpen(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:text-[#1D4ED8] hover:bg-blue-50 font-medium transition-colors">
+                <Settings className="w-4 h-4 text-[#1D4ED8]" /> Settings
+              </Link>
               <Link to="/contact" onClick={() => setOpen(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:text-[#1D4ED8] hover:bg-blue-50 font-medium transition-colors">
-                <MessageSquare className="w-4 h-4 text-[#1D4ED8]" /> Support
+                <HelpCircle className="w-4 h-4 text-[#1D4ED8]" /> Help Center
               </Link>
               <div className="border-t border-slate-100 mt-1 pt-1">
                 <button onClick={() => { setOpen(false); handleLogout(); }} className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm text-red-600 hover:bg-red-50 font-medium transition-colors">

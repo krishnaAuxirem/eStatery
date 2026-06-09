@@ -4,10 +4,12 @@ import {
   MapPin, Bed, Bath, Maximize2, Car, Star, Eye, Heart, Share2,
   Phone, MessageCircle, Calendar, CheckCircle, Video, Shield,
   ArrowLeft, ChevronLeft, ChevronRight, Verified, TrendingUp,
-  Home, Building2, Layers, Zap
+  Building2, Layers, Zap
 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import PropertyCard from "@/components/features/PropertyCard";
+import EmptyState from "@/components/ui/EmptyState";
 import { useProperty } from "@/context/PropertyContext";
 import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/data/properties";
@@ -17,29 +19,29 @@ import { cn } from "@/lib/utils";
 const PropertyDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getPropertyById } = useProperty();
+  const { getPropertyById, allProperties } = useProperty();
   const { user, toggleSaveProperty } = useAuth();
   const [imgIdx, setImgIdx] = useState(0);
   const [bookingDate, setBookingDate] = useState("");
   const [bookingTime, setBookingTime] = useState("10:00");
-  const [showBookingModal, setShowBookingModal] = useState(false);
   const [bookingType, setBookingType] = useState<"visit" | "virtual">("visit");
 
   const property = getPropertyById(id || "");
 
   if (!property) {
     return (
-      <div className="min-h-screen bg-brand-bg">
+      <div className="min-h-screen bg-brand-bg flex flex-col">
         <Navbar />
-        <div className="pt-16 flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <div className="text-6xl mb-4">🏚️</div>
-            <h2 className="text-2xl font-bold text-brand-text mb-2">Property Not Found</h2>
-            <Link to="/properties" className="mt-4 inline-flex items-center gap-2 text-brand-purple hover:underline">
-              <ArrowLeft className="w-4 h-4" /> Back to Properties
-            </Link>
-          </div>
+        <div className="flex-1 flex items-center justify-center p-6">
+          <EmptyState
+            icon={Building2}
+            title="Property Not Found"
+            description="The property you are looking for does not exist or has been removed from our listings."
+            actionLabel="Back to Properties"
+            actionHref="/properties"
+          />
         </div>
+        <Footer />
       </div>
     );
   }
@@ -71,7 +73,6 @@ const PropertyDetail = () => {
     });
     localStorage.setItem("estatery_bookings", JSON.stringify(bookings));
     toast.success(`${bookingType === "visit" ? "Visit" : "Virtual tour"} booked for ${bookingDate} at ${bookingTime}!`);
-    setShowBookingModal(false);
   };
 
   return (
@@ -201,16 +202,30 @@ const PropertyDetail = () => {
                 <p className="text-brand-muted leading-relaxed">{property.description}</p>
               </div>
 
-              {/* Features */}
-              <div className="bg-white rounded-2xl border border-brand-border p-6">
-                <h2 className="font-bold text-brand-text text-lg mb-4">Key Features</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {[...property.features, ...property.amenities].map(f => (
-                    <div key={f} className="flex items-center gap-2 text-sm text-brand-text">
-                      <CheckCircle className="w-4 h-4 text-brand-emerald shrink-0" /> {f}
-                    </div>
-                  ))}
+              {/* Features & Amenities visually enhanced */}
+              <div className="bg-white rounded-2xl border border-brand-border p-6 space-y-6">
+                <div>
+                  <h2 className="font-bold text-slate-800 text-lg mb-3">Key Features</h2>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {property.features.map(f => (
+                      <div key={f} className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-100 text-sm text-slate-800">
+                        <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" /> {f}
+                      </div>
+                    ))}
+                  </div>
                 </div>
+                {property.amenities && property.amenities.length > 0 && (
+                  <div>
+                    <h2 className="font-bold text-slate-800 text-lg mb-3">Amenities</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {property.amenities.map(a => (
+                        <div key={a} className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-blue-50/50 border border-blue-50 text-sm text-slate-800">
+                          <CheckCircle className="w-4 h-4 text-[#1D4ED8] shrink-0" /> {a}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -262,41 +277,56 @@ const PropertyDetail = () => {
 
                 <button
                   onClick={handleBook}
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-purple to-brand-indigo text-white font-bold hover:shadow-brand transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#1D4ED8] to-[#2563EB] text-white font-bold hover:shadow-brand transition-all flex items-center justify-center gap-2"
                 >
                   <Calendar className="w-4 h-4" /> Book {bookingType === "virtual" ? "Virtual Tour" : "Visit"}
                 </button>
 
                 <div className="flex gap-3 mt-3">
-                  <button className="flex-1 py-3 rounded-xl border border-brand-border text-brand-text font-medium text-sm hover:border-brand-purple hover:text-brand-purple transition-all flex items-center justify-center gap-2">
-                    <Phone className="w-4 h-4" /> Call
+                  <button onClick={() => toast.success(`Calling ${property.ownerName}...`)} className="flex-1 py-3 rounded-xl border border-brand-border text-brand-text font-medium text-sm hover:border-brand-purple hover:text-brand-purple transition-all flex items-center justify-center gap-2">
+                    <Phone className="w-4 h-4 text-[#1D4ED8]" /> Call
                   </button>
-                  <button className="flex-1 py-3 rounded-xl border border-brand-border text-brand-text font-medium text-sm hover:border-brand-purple hover:text-brand-purple transition-all flex items-center justify-center gap-2">
-                    <MessageCircle className="w-4 h-4" /> Message
+                  <button onClick={() => toast.success(`Starting chat with ${property.ownerName}...`)} className="flex-1 py-3 rounded-xl border border-brand-border text-brand-text font-medium text-sm hover:border-brand-purple hover:text-brand-purple transition-all flex items-center justify-center gap-2">
+                    <MessageCircle className="w-4 h-4 text-[#1D4ED8]" /> Message
                   </button>
                 </div>
               </div>
 
-              {/* Owner Card */}
-              <div className="bg-white rounded-2xl border border-brand-border p-5">
-                <h3 className="font-bold text-brand-text mb-4 text-sm">Listed by</h3>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-purple to-brand-indigo flex items-center justify-center text-white font-bold text-lg">
+              {/* Owner / Agent Card visually enhanced */}
+              <div className="bg-white rounded-2xl border border-brand-border p-5 space-y-4">
+                <h3 className="font-bold text-slate-800 text-sm">Listed by</h3>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#1D4ED8] to-[#2563EB] flex items-center justify-center text-white font-bold text-lg shadow-sm">
                     {property.ownerName.charAt(0)}
                   </div>
                   <div>
-                    <div className="font-semibold text-brand-text">{property.ownerName}</div>
-                    <div className="text-brand-muted text-xs">Property Owner · Verified</div>
+                    <div className="font-bold text-slate-800 text-sm">{property.ownerName}</div>
+                    <div className="text-slate-400 text-xs mt-0.5">Verified Property Partner</div>
+                    <div className="flex items-center gap-1 mt-1">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-xs font-semibold text-slate-700">4.9</span>
+                      <span className="text-slate-400 text-[10px]"> (48 reviews)</span>
+                    </div>
                   </div>
                 </div>
-                <div className="text-xs text-brand-muted flex items-center gap-2">
-                  <Shield className="w-3.5 h-3.5 text-brand-emerald" />
-                  Identity verified by eStatery
+                <div className="grid grid-cols-2 gap-2 text-center text-xs py-1 border-y border-[#E2E8F0]">
+                  <div className="py-1 border-r border-[#E2E8F0]">
+                    <div className="font-bold text-[#1D4ED8]">2 Hours</div>
+                    <div className="text-slate-400 text-[10px]">Avg Response</div>
+                  </div>
+                  <div className="py-1">
+                    <div className="font-bold text-slate-800">12 Listings</div>
+                    <div className="text-slate-400 text-[10px]">Properties</div>
+                  </div>
+                </div>
+                <div className="text-xs text-slate-500 flex items-center gap-2 pt-1">
+                  <Shield className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <span>Identity verified & compliant</span>
                 </div>
               </div>
 
               {/* Safety Tips */}
-              <div className="bg-amber-50 border border-amber-100 rounded-2xl p-5">
+              <div className="bg-amber-50/50 border border-amber-100 rounded-2xl p-5">
                 <h3 className="font-bold text-amber-800 text-sm mb-3 flex items-center gap-2">
                   <Shield className="w-4 h-4" /> Safety Tips
                 </h3>
@@ -307,6 +337,21 @@ const PropertyDetail = () => {
                   <li>• Report suspicious listings immediately</li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Related Properties visually added */}
+        <div className="border-t border-brand-border bg-white py-16 mt-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <h2 className="text-2xl font-bold text-slate-800 mb-8">Related Properties</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {allProperties
+                .filter(p => p.id !== property.id && (p.location.city === property.location.city || p.type === property.type))
+                .slice(0, 3)
+                .map(p => (
+                  <PropertyCard key={p.id} property={p} />
+                ))}
             </div>
           </div>
         </div>

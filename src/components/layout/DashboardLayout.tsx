@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import { Link, useNavigate, useLocation, NavLink } from "react-router-dom";
 import {
-  Menu, X, LogOut, ChevronRight, Bell, Settings, Home,
-  ExternalLink
+  Menu, X, LogOut, ChevronRight, Bell, Home
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -19,8 +17,8 @@ export interface SidebarTab {
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  activeTab: string;
-  onTabChange: (tab: string) => void;
+  activeTab?: string;
+  onTabChange?: (tab: string) => void;
   tabs: SidebarTab[];
   role: string;
   roleColor?: string;
@@ -48,14 +46,21 @@ const DashboardLayout = ({
 }: DashboardLayoutProps) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true); // Compact by default
 
   const theme = ROLE_THEMES[role] || ROLE_THEMES.buyer;
 
+  // Compute active tab from pathname if not provided
+  const pathParts = pathname.split("/");
+  const lastPart = pathParts[pathParts.length - 1];
+  const computedActiveTab = lastPart === role ? "overview" : lastPart;
+  const currentActiveTab = activeTab || computedActiveTab;
+
   // Close sidebar on route change (mobile)
-  const location = useLocation();
-  useEffect(() => { setSidebarOpen(false); }, [location.pathname]);
+  useEffect(() => { setSidebarOpen(false); }, [pathname]);
 
   // Lock body scroll when mobile sidebar is open
   useEffect(() => {
@@ -73,7 +78,6 @@ const DashboardLayout = ({
 
   return (
     <div className="min-h-screen bg-[#F5F7FA]">
-
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -88,9 +92,7 @@ const DashboardLayout = ({
           className={cn(
             "fixed top-0 left-0 h-screen z-40 flex flex-col transition-all duration-300 ease-in-out",
             "bg-white border-r border-[#E2E8F0] shadow-[2px_0_20px_rgba(0,0,0,0.06)]",
-            // Mobile
             sidebarOpen ? "translate-x-0" : "-translate-x-full",
-            // Desktop
             "lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:shrink-0",
             collapsed ? "lg:w-[72px]" : "lg:w-[260px]",
             "w-[260px]"
@@ -140,46 +142,49 @@ const DashboardLayout = ({
           <nav className="flex-1 overflow-y-auto p-3 space-y-1">
             {tabs.map(tab => {
               const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
               return (
-                <button
+                <NavLink
                   key={tab.id}
-                  onClick={() => { onTabChange(tab.id); setSidebarOpen(false); }}
+                  to={`/dashboard/${role}/${tab.id}`}
+                  onClick={() => setSidebarOpen(false)}
                   title={collapsed ? tab.label : undefined}
-                  className={cn(
+                  className={({ isActive }) => cn(
                     "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all group relative",
                     isActive
-                      ? "text-white shadow-md"
+                      ? "text-white shadow-md font-bold"
                       : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F5F7FA]"
                   )}
-                  style={isActive ? { background: `linear-gradient(135deg, ${theme.accent}, ${theme.accent}cc)` } : {}}
+                  style={({ isActive }) => isActive ? { background: `linear-gradient(135deg, ${theme.accent}, ${theme.accent}cc)` } : {}}
                 >
-                  {/* Active indicator */}
-                  {isActive && (
-                    <span
-                      className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full"
-                      style={{ background: theme.accent }}
-                    />
-                  )}
-
-                  <Icon className={cn("w-4.5 h-4.5 shrink-0", isActive ? "text-white" : "text-[#94A3B8] group-hover:text-[#5B21B6]")} />
-
-                  {!collapsed && (
+                  {({ isActive }) => (
                     <>
-                      <span className="flex-1 text-left">{tab.label}</span>
-                      {tab.badge !== undefined && (
+                      {isActive && (
                         <span
-                          className={cn(
-                            "text-[10px] font-extrabold px-1.5 py-0.5 rounded-full min-w-[20px] text-center",
-                            isActive ? "bg-white/25 text-white" : (tab.badgeColor || "bg-[#EDE9FE] text-[#5B21B6]")
+                          className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full"
+                          style={{ background: theme.accent }}
+                        />
+                      )}
+
+                      <Icon className={cn("w-4.5 h-4.5 shrink-0", isActive ? "text-white" : "text-[#94A3B8] group-hover:text-[#1D4ED8]")} />
+
+                      {!collapsed && (
+                        <>
+                          <span className="flex-1 text-left">{tab.label}</span>
+                          {tab.badge !== undefined && (
+                            <span
+                              className={cn(
+                                "text-[10px] font-extrabold px-1.5 py-0.5 rounded-full min-w-[20px] text-center",
+                                isActive ? "bg-white/25 text-white" : (tab.badgeColor || "bg-blue-50 text-blue-700")
+                              )}
+                            >
+                              {tab.badge}
+                            </span>
                           )}
-                        >
-                          {tab.badge}
-                        </span>
+                        </>
                       )}
                     </>
                   )}
-                </button>
+                </NavLink>
               );
             })}
           </nav>
@@ -194,7 +199,7 @@ const DashboardLayout = ({
               )}
               title={collapsed ? "Back to Home" : undefined}
             >
-              <Home className="w-4 h-4 shrink-0 text-[#94A3B8] group-hover:text-[#5B21B6]" />
+              <Home className="w-4 h-4 shrink-0 text-[#94A3B8] group-hover:text-[#1D4ED8]" />
               {!collapsed && <span>Back to Home</span>}
             </Link>
             <button
@@ -230,7 +235,7 @@ const DashboardLayout = ({
                 <div>
                   <div className="flex items-center gap-2">
                     <h1 className="text-white font-bold text-base sm:text-lg capitalize">
-                      {tabs.find(t => t.id === activeTab)?.label || "Dashboard"}
+                      {tabs.find(t => t.id === currentActiveTab)?.label || "Dashboard"}
                     </h1>
                     <span
                       className={cn("hidden sm:inline text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wide", theme.badge, "text-white")}
@@ -266,30 +271,26 @@ const DashboardLayout = ({
             <div className="flex items-center gap-1 py-2 min-w-max">
               {tabs.map(tab => {
                 const Icon = tab.icon;
-                const isActive = activeTab === tab.id;
                 return (
-                  <button
+                  <NavLink
                     key={tab.id}
-                    onClick={() => onTabChange(tab.id)}
-                    className={cn(
+                    to={`/dashboard/${role}/${tab.id}`}
+                    className={({ isActive }) => cn(
                       "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap",
                       isActive
-                        ? "text-white shadow-sm"
+                        ? "text-white shadow-sm font-bold"
                         : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F5F7FA]"
                     )}
-                    style={isActive ? { background: theme.accent } : {}}
+                    style={({ isActive }) => isActive ? { background: theme.accent } : {}}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     {tab.label}
                     {tab.badge !== undefined && (
-                      <span className={cn(
-                        "text-[9px] font-extrabold px-1.5 py-0.5 rounded-full",
-                        isActive ? "bg-white/25 text-white" : "bg-[#EDE9FE] text-[#5B21B6]"
-                      )}>
+                      <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-white/25 text-white">
                         {tab.badge}
                       </span>
                     )}
-                  </button>
+                  </NavLink>
                 );
               })}
             </div>
@@ -297,7 +298,9 @@ const DashboardLayout = ({
 
           {/* Page Content */}
           <main className="flex-1 p-4 sm:p-6">
-            {children}
+            <div className="max-w-7xl mx-auto w-full space-y-6">
+              {children}
+            </div>
           </main>
         </div>
       </div>
