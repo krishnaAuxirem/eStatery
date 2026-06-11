@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { SlidersHorizontal, Grid3X3, List, X, ChevronDown, Building2 } from "lucide-react";
+import { SlidersHorizontal, Grid3X3, List, X, ChevronDown, Building2, Map } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PropertyCard from "@/components/features/PropertyCard";
@@ -8,6 +8,7 @@ import SearchBar from "@/components/features/SearchBar";
 import EmptyState from "@/components/ui/EmptyState";
 import { useProperty } from "@/context/PropertyContext";
 import { cn } from "@/lib/utils";
+import PropertyMap from "@/components/features/PropertyMap";
 
 const CITIES = ["all", "Mumbai", "Bangalore", "Gurgaon", "Delhi", "Hyderabad", "Chennai", "Pune"];
 const TYPES = ["all", "apartment", "villa", "house", "commercial", "studio", "penthouse"];
@@ -25,6 +26,7 @@ const Properties = () => {
   const [view, setView] = useState<"grid" | "list">("grid");
   const [sort, setSort] = useState("newest");
   const [showFilters, setShowFilters] = useState(false);
+  const [showMap, setShowMap] = useState(true);
 
   useEffect(() => {
     const type = searchParams.get("type");
@@ -38,7 +40,7 @@ const Properties = () => {
       type: category || "all",
       search: search || ""
     });
-  }, [searchParams]);
+  }, [searchParams, setFilters]);
 
   const sortedProperties = [...properties].sort((a, b) => {
     switch (sort) {
@@ -67,7 +69,10 @@ const Properties = () => {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div className={cn(
+          "mx-auto px-4 sm:px-6 py-8 transition-all duration-300",
+          showMap ? "max-w-[1500px]" : "max-w-7xl"
+        )}>
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Filters Sidebar */}
             <aside className={cn(
@@ -184,6 +189,16 @@ const Properties = () => {
                       <List className="w-4 h-4" />
                     </button>
                   </div>
+                  <button
+                    onClick={() => setShowMap(!showMap)}
+                    className={cn(
+                      "flex items-center gap-1.5 px-3 py-2 rounded-xl border border-brand-border text-sm font-medium transition-all hover:border-brand-purple hover:text-brand-purple",
+                      showMap ? "bg-brand-purple text-white border-brand-purple hover:text-white" : "bg-white text-brand-muted"
+                    )}
+                  >
+                    <Map className="w-4 h-4" />
+                    <span className="hidden md:inline">{showMap ? "Hide Map" : "Show Map"}</span>
+                  </button>
                 </div>
               </div>
 
@@ -198,7 +213,9 @@ const Properties = () => {
               ) : (
                 <div className={cn(
                   "grid gap-5",
-                  view === "grid" ? "grid-cols-1 md:grid-cols-2 xl:grid-cols-3" : "grid-cols-1"
+                  view === "grid" 
+                    ? (showMap ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-2 xl:grid-cols-3") 
+                    : "grid-cols-1"
                 )}>
                   {sortedProperties.map(p => (
                     <PropertyCard key={p.id} property={p} variant={view === "list" ? "featured" : "default"} />
@@ -206,6 +223,12 @@ const Properties = () => {
                 </div>
               )}
             </main>
+
+            {showMap && sortedProperties.length > 0 && (
+              <aside className="w-full lg:w-[450px] xl:w-[520px] shrink-0 lg:sticky lg:top-24 h-[550px] z-10">
+                <PropertyMap properties={sortedProperties} />
+              </aside>
+            )}
           </div>
         </div>
       </div>

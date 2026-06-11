@@ -10,6 +10,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PropertyCard from "@/components/features/PropertyCard";
 import EmptyState from "@/components/ui/EmptyState";
+import MediaViewer from "@/components/features/MediaViewer";
 import { useProperty } from "@/context/PropertyContext";
 import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/data/properties";
@@ -135,39 +136,7 @@ const PropertyDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left: Images + Details */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Image Gallery */}
-              <div className="relative rounded-2xl overflow-hidden bg-gray-100 h-80 lg:h-[450px]">
-                <img src={property.images[imgIdx]} alt={property.title} className="w-full h-full object-cover" />
-                {property.images.length > 1 && (
-                  <>
-                    <button onClick={() => setImgIdx((imgIdx - 1 + property.images.length) % property.images.length)} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-all">
-                      <ChevronLeft className="w-5 h-5 text-brand-text" />
-                    </button>
-                    <button onClick={() => setImgIdx((imgIdx + 1) % property.images.length)} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-all">
-                      <ChevronRight className="w-5 h-5 text-brand-text" />
-                    </button>
-                  </>
-                )}
-                {property.virtualTour && (
-                  <button className="absolute bottom-4 right-4 flex items-center gap-2 px-4 py-2 rounded-xl bg-white/90 backdrop-blur-sm text-brand-purple font-semibold text-sm hover:bg-white transition-all shadow-md">
-                    <Video className="w-4 h-4" /> Virtual Tour
-                  </button>
-                )}
-                <div className="absolute bottom-4 left-4 flex gap-2">
-                  {property.images.map((_, i) => (
-                    <button key={i} onClick={() => setImgIdx(i)} className={cn("w-2 h-2 rounded-full transition-all", i === imgIdx ? "bg-white w-6" : "bg-white/60")} />
-                  ))}
-                </div>
-              </div>
-
-              {/* Thumbnail Strip */}
-              <div className="flex gap-3">
-                {property.images.map((img, i) => (
-                  <button key={i} onClick={() => setImgIdx(i)} className={cn("h-16 w-24 rounded-xl overflow-hidden border-2 transition-all", i === imgIdx ? "border-brand-purple" : "border-transparent hover:border-brand-border")}>
-                    <img src={img} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
+              <MediaViewer property={property} onBookVirtualTour={() => setBookingType("virtual")} />
 
               {/* Key Specs */}
               <div className="bg-white rounded-2xl border border-brand-border p-6">

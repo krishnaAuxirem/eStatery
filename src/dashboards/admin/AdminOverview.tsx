@@ -1,11 +1,13 @@
+import { useState } from "react";
 import {
-  Users, Building2, DollarSign, Activity, AlertTriangle, TrendingUp
+  Users, Building2, DollarSign, Activity, AlertTriangle, TrendingUp, Calendar
 } from "lucide-react";
 import { useProperty } from "@/context/PropertyContext";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, PieChart, Pie, Cell, Legend
 } from "recharts";
+import { toast } from "sonner";
 
 const REVENUE_DATA = [
   { month: "Jan", revenue: 2400000 },
@@ -26,8 +28,25 @@ const PROPERTY_TYPES_PIE = [
 
 const COLORS = ["#1D4ED8", "#10B981", "#2563EB", "#F59E0B", "#64748B"];
 
+interface AdminBookingItem {
+  id: string;
+  propertyId: string;
+  propertyTitle: string;
+  propertyImage: string;
+  userId: string;
+  date: string;
+  time: string;
+  status: "pending" | "confirmed" | "cancelled";
+  type: "visit" | "virtual";
+  createdAt: string;
+}
+
 export default function AdminOverview() {
   const { allProperties } = useProperty();
+  const [adminBookings, setAdminBookings] = useState<AdminBookingItem[]>(() => {
+    const local: AdminBookingItem[] = JSON.parse(localStorage.getItem("estatery_bookings") || "[]");
+    return local;
+  });
 
   return (
     <div className="space-y-6">
@@ -143,6 +162,74 @@ export default function AdminOverview() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Global Visit Scheduling Monitor */}
+      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6 mt-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="font-bold text-[#0F172A] flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-[#1D4ED8]" /> Appointment Monitoring Center
+            </h3>
+            <p className="text-xs text-[#64748B] mt-0.5">Audit site visits, physical inspections, and online virtual meetings.</p>
+          </div>
+          <span className="text-xs bg-slate-100 text-[#1D4ED8] px-3 py-1 rounded-full font-bold border border-blue-100">
+            {adminBookings.length} Active Records
+          </span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-slate-100 text-[#64748B] text-[10px] font-bold uppercase tracking-wider">
+                <th className="py-3 px-4">Property</th>
+                <th className="py-3 px-4">Type</th>
+                <th className="py-3 px-4">Date & Time</th>
+                <th className="py-3 px-4">Status</th>
+                <th className="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50 text-xs">
+              {adminBookings.map((b: AdminBookingItem) => (
+                <tr key={b.id} className="hover:bg-slate-50/50 transition-colors">
+                  <td className="py-3.5 px-4 font-semibold text-slate-800">{b.propertyTitle}</td>
+                  <td className="py-3.5 px-4">
+                    <span className={`px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase ${b.type === "virtual" ? "bg-purple-50 text-purple-700" : "bg-blue-50 text-blue-700"}`}>
+                      {b.type === "virtual" ? "Virtual" : "Physical"}
+                    </span>
+                  </td>
+                  <td className="py-3.5 px-4 text-slate-600">{b.date} at {b.time}</td>
+                  <td className="py-3.5 px-4">
+                    <span className={`px-2 py-0.5 rounded-md text-[9px] font-extrabold capitalize ${
+                      b.status === "confirmed" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" : b.status === "cancelled" ? "bg-red-50 text-red-600 border border-red-100" : "bg-amber-50 text-amber-700 border border-amber-100"
+                    }`}>
+                      {b.status}
+                    </span>
+                  </td>
+                  <td className="py-3.5 px-4 text-right">
+                    {b.status !== "cancelled" && (
+                      <button 
+                        onClick={() => {
+                          const updated = adminBookings.map((x: AdminBookingItem) => x.id === b.id ? { ...x, status: "cancelled" as const } : x);
+                          localStorage.setItem("estatery_bookings", JSON.stringify(updated));
+                          setAdminBookings(updated);
+                          toast.success("Appointment cancelled by Admin override.");
+                        }} 
+                        className="text-xs font-bold text-red-600 hover:underline"
+                      >
+                        Force Cancel
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+              {adminBookings.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="py-8 text-center text-slate-400 text-xs">No site visit booking logs found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

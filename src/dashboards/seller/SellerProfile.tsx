@@ -2,14 +2,15 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useProperty } from "@/context/PropertyContext";
 import { toast } from "sonner";
+import type { Property } from "@/types";
 
 export default function SellerProfile() {
   const { user, updateProfile } = useAuth();
   const { allProperties } = useProperty();
 
   const myProps = allProperties.filter(p => p.ownerId === user?.id || p.ownerName === user?.name);
-  const totalViews = myProps.reduce((s: number, p: any) => s + p.views, 0);
-  const activeListings = myProps.filter((p: any) => p.status === "active").length;
+  const totalViews = myProps.reduce((s: number, p: Property) => s + p.views, 0);
+  const activeListings = myProps.filter((p: Property) => p.status === "active").length;
 
   const [name, setName] = useState(user?.name || "");
   const [phone, setPhone] = useState(user?.phone || "");

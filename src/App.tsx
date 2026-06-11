@@ -25,6 +25,16 @@ const PostProperty = lazy(() => import("./pages/PostProperty"));
 const SavedProperties = lazy(() => import("./pages/SavedProperties"));
 const Unauthorized = lazy(() => import("./pages/Unauthorized"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const About = lazy(() => import("./pages/About"));
+const Careers = lazy(() => import("./pages/Careers"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Buyers = lazy(() => import("./pages/Buyers"));
+const Tenants = lazy(() => import("./pages/Tenants"));
+const Sellers = lazy(() => import("./pages/Sellers"));
+const Services = lazy(() => import("./pages/Services"));
+const NewsGuide = lazy(() => import("./pages/NewsGuide"));
 
 // Lazy Dashboards Shells
 const BuyerDashboard = lazy(() => import("./dashboards/buyer/BuyerDashboard"));
@@ -37,6 +47,7 @@ const AdminDashboard = lazy(() => import("./dashboards/admin/AdminDashboard"));
 const BuyerOverview = lazy(() => import("./dashboards/buyer/BuyerOverview"));
 const BuyerSaved = lazy(() => import("./dashboards/buyer/BuyerSaved"));
 const BuyerBookings = lazy(() => import("./dashboards/buyer/BuyerBookings"));
+const BuyerChats = lazy(() => import("./dashboards/buyer/BuyerChats"));
 const BuyerNotifications = lazy(() => import("./dashboards/buyer/BuyerNotifications"));
 const BuyerProfile = lazy(() => import("./dashboards/buyer/BuyerProfile"));
 
@@ -45,6 +56,7 @@ const SellerOverview = lazy(() => import("./dashboards/seller/SellerOverview"));
 const SellerListings = lazy(() => import("./dashboards/seller/SellerListings"));
 const SellerAnalytics = lazy(() => import("./dashboards/seller/SellerAnalytics"));
 const SellerInquiries = lazy(() => import("./dashboards/seller/SellerInquiries"));
+const SellerChats = lazy(() => import("./dashboards/seller/SellerChats"));
 const SellerProfile = lazy(() => import("./dashboards/seller/SellerProfile"));
 
 // Lazy Agent Subpages
@@ -52,6 +64,7 @@ const AgentOverview = lazy(() => import("./dashboards/agent/AgentOverview"));
 const AgentClients = lazy(() => import("./dashboards/agent/AgentClients"));
 const AgentAppointments = lazy(() => import("./dashboards/agent/AgentAppointments"));
 const AgentCommissions = lazy(() => import("./dashboards/agent/AgentCommissions"));
+const AgentChats = lazy(() => import("./dashboards/agent/AgentChats"));
 const AgentProfile = lazy(() => import("./dashboards/agent/AgentProfile"));
 
 // Lazy Tenant Subpages
@@ -65,6 +78,7 @@ const TenantProfile = lazy(() => import("./dashboards/tenant/TenantProfile"));
 const AdminOverview = lazy(() => import("./dashboards/admin/AdminOverview"));
 const AdminUsers = lazy(() => import("./dashboards/admin/AdminUsers"));
 const AdminProperties = lazy(() => import("./dashboards/admin/AdminProperties"));
+const AdminDisputes = lazy(() => import("./dashboards/admin/AdminDisputes"));
 const AdminBlogs = lazy(() => import("./dashboards/admin/AdminBlogs"));
 const AdminAnalytics = lazy(() => import("./dashboards/admin/AdminAnalytics"));
 const AdminSettings = lazy(() => import("./dashboards/admin/AdminSettings"));
@@ -93,6 +107,16 @@ const App = () => (
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogDetail />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/careers" element={<Careers />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/buyers" element={<Buyers />} />
+                <Route path="/tenants" element={<Tenants />} />
+                <Route path="/sellers" element={<Sellers />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/news-guide" element={<NewsGuide />} />
                 <Route path="/ai-insights" element={<AIInsights />} />
                 <Route path="/unauthorized" element={<Unauthorized />} />
 
@@ -108,6 +132,7 @@ const App = () => (
                   <Route path="overview" element={<BuyerOverview />} />
                   <Route path="saved" element={<BuyerSaved />} />
                   <Route path="bookings" element={<BuyerBookings />} />
+                  <Route path="chats" element={<BuyerChats />} />
                   <Route path="notifications" element={<BuyerNotifications />} />
                   <Route path="profile" element={<BuyerProfile />} />
                   <Route path="*" element={<Navigate to="overview" replace />} />
@@ -119,6 +144,7 @@ const App = () => (
                   <Route path="listings" element={<SellerListings />} />
                   <Route path="analytics" element={<SellerAnalytics />} />
                   <Route path="inquiries" element={<SellerInquiries />} />
+                  <Route path="chats" element={<SellerChats />} />
                   <Route path="profile" element={<SellerProfile />} />
                   <Route path="*" element={<Navigate to="overview" replace />} />
                 </Route>
@@ -129,6 +155,7 @@ const App = () => (
                   <Route path="clients" element={<AgentClients />} />
                   <Route path="appointments" element={<AgentAppointments />} />
                   <Route path="commissions" element={<AgentCommissions />} />
+                  <Route path="chats" element={<AgentChats />} />
                   <Route path="profile" element={<AgentProfile />} />
                   <Route path="*" element={<Navigate to="overview" replace />} />
                 </Route>
@@ -148,6 +175,7 @@ const App = () => (
                   <Route path="overview" element={<AdminOverview />} />
                   <Route path="users" element={<AdminUsers />} />
                   <Route path="properties" element={<AdminProperties />} />
+                  <Route path="disputes" element={<AdminDisputes />} />
                   <Route path="blogs" element={<AdminBlogs />} />
                   <Route path="analytics" element={<AdminAnalytics />} />
                   <Route path="settings" element={<AdminSettings />} />

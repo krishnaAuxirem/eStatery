@@ -3,6 +3,7 @@ import { Heart, Search, MapPin, Star } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useProperty } from "@/context/PropertyContext";
 import { formatPrice } from "@/data/properties";
+import type { Property } from "@/types";
 
 export default function BuyerSaved() {
   const { user } = useAuth();
@@ -25,7 +26,7 @@ export default function BuyerSaved() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {savedProps.map((p: any) => (
+          {savedProps.map((p: Property) => (
             <Link key={p.id} to={`/properties/${p.id}`} className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden hover:shadow-lg hover:border-[#1D4ED8]/20 transition-all group">
               <div className="relative h-40 overflow-hidden">
                 <img src={p.images[0]} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />

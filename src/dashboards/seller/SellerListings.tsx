@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useProperty } from "@/context/PropertyContext";
 import { formatPrice } from "@/data/properties";
 import { toast } from "sonner";
+import type { Property } from "@/types";
 
 export default function SellerListings() {
   const { user } = useAuth();
@@ -32,7 +33,7 @@ export default function SellerListings() {
         </div>
       ) : (
         <div className="space-y-4">
-          {myProps.map((p: any) => (
+          {myProps.map((p: Property) => (
             <div key={p.id} className="bg-white rounded-2xl border border-[#E2E8F0] p-5 flex gap-4 hover:shadow-md transition-all">
               <img src={p.images[0]} alt={p.title} className="w-24 h-24 rounded-xl object-cover shrink-0" />
               <div className="flex-1 min-w-0">

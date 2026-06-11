@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { BarChart3, Users, Calendar, DollarSign, User, Star } from "lucide-react";
+import { BarChart3, Users, Calendar, DollarSign, User, Star, MessageSquare } from "lucide-react";
 
 const TABS = [
   { id: "overview", label: "Overview", icon: BarChart3 },
   { id: "clients", label: "Client CRM", icon: Users, badge: 4 },
   { id: "appointments", label: "Appointments", icon: Calendar },
   { id: "commissions", label: "Commissions", icon: DollarSign },
+  { id: "chats", label: "Chat Center", icon: MessageSquare },
   { id: "profile", label: "My Profile", icon: User },
 ];
 

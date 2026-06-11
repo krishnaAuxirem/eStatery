@@ -28,8 +28,8 @@ const PostProperty = () => {
     if (!user) { toast.error("Please login to post a property"); return; }
     const newProp = addProperty({
       title: form.title || "New Property",
-      type: form.type as any,
-      listingType: form.listingType as any,
+      type: form.type as "apartment" | "villa" | "house" | "commercial" | "studio" | "penthouse",
+      listingType: form.listingType as "buy" | "rent",
       price: Number(form.price) || 5000000,
       priceUnit: form.listingType === "rent" ? "month" : undefined,
       location: { city: form.city, area: form.area, address: form.address },
@@ -56,11 +56,11 @@ const PostProperty = () => {
     <div>
       <label className="block text-sm font-semibold text-brand-text mb-1.5">{label}</label>
       {options ? (
-        <select value={(form as any)[field]} onChange={e => update(field, e.target.value)} className="w-full px-4 py-3 rounded-xl border border-brand-border text-sm text-brand-text outline-none focus:border-brand-purple">
+        <select value={form[field as keyof typeof form]} onChange={e => update(field, e.target.value)} className="w-full px-4 py-3 rounded-xl border border-brand-border text-sm text-brand-text outline-none focus:border-brand-purple">
           {options.map(o => <option key={o} value={o}>{o}</option>)}
         </select>
       ) : (
-        <input type={type} value={(form as any)[field]} onChange={e => update(field, e.target.value)} placeholder={placeholder} className="w-full px-4 py-3 rounded-xl border border-brand-border text-sm text-brand-text outline-none focus:border-brand-purple" />
+        <input type={type} value={form[field as keyof typeof form]} onChange={e => update(field, e.target.value)} placeholder={placeholder} className="w-full px-4 py-3 rounded-xl border border-brand-border text-sm text-brand-text outline-none focus:border-brand-purple" />
       )}
     </div>
   );

@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { BarChart3, Users, Building2, FileText, TrendingUp, Settings } from "lucide-react";
+import { BarChart3, Users, Building2, FileText, TrendingUp, Settings, AlertTriangle } from "lucide-react";
 
 const TABS = [
   { id: "overview", label: "Dashboard", icon: BarChart3 },
   { id: "users", label: "Users", icon: Users, badge: "2.1M" },
   { id: "properties", label: "Properties", icon: Building2 },
+  { id: "disputes", label: "Disputes", icon: AlertTriangle, badge: "2" },
   { id: "blogs", label: "Blog Manager", icon: FileText },
   { id: "analytics", label: "Analytics", icon: TrendingUp },
   { id: "settings", label: "Settings", icon: Settings },

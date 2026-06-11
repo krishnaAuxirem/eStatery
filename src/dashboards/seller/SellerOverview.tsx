@@ -8,6 +8,7 @@ import { useProperty } from "@/context/PropertyContext";
 import { formatPrice } from "@/data/properties";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
 import { toast } from "sonner";
+import type { Property } from "@/types";
 
 const MONTHLY_REVENUE = [
   { month: "Jan", revenue: 420000 }, { month: "Feb", revenue: 380000 }, { month: "Mar", revenue: 650000 },
@@ -24,8 +25,8 @@ export default function SellerOverview() {
   const navigate = useNavigate();
 
   const myProps = allProperties.filter(p => p.ownerId === user?.id || p.ownerName === user?.name);
-  const totalViews = myProps.reduce((s: number, p: any) => s + p.views, 0);
-  const activeListings = myProps.filter((p: any) => p.status === "active").length;
+  const totalViews = myProps.reduce((s: number, p: Property) => s + p.views, 0);
+  const activeListings = myProps.filter((p: Property) => p.status === "active").length;
 
   return (
     <div className="space-y-6">
@@ -115,7 +116,7 @@ export default function SellerOverview() {
             <Link to="/dashboard/seller/listings" className="text-sm font-semibold text-[#1D4ED8] flex items-center gap-1 hover:underline">View all <ArrowUpRight className="w-3 h-3" /></Link>
           </div>
           <div className="space-y-3">
-            {myProps.slice(0, 3).map((p: any) => (
+            {myProps.slice(0, 3).map((p: Property) => (
               <div key={p.id} className="flex items-center gap-4 p-3 rounded-xl border border-[#E2E8F0] hover:bg-[#F5F7FA] transition-colors">
                 <img src={p.images[0]} alt={p.title} className="w-14 h-14 rounded-xl object-cover shrink-0" />
                 <div className="flex-1 min-w-0">

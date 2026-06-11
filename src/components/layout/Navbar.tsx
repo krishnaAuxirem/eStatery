@@ -240,9 +240,9 @@ const Navbar = () => {
             <div className="hidden lg:flex items-center gap-1 flex-1 justify-center">
               {/* For Buyers */}
               <div className="relative" onMouseEnter={() => openMega("buyers")} onMouseLeave={closeMega}>
-                <button className={navItemCls("buyers")}>
+                <Link to="/buyers" className={navItemCls("buyers")}>
                   For Buyers <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", activeMega === "buyers" && "rotate-180")} />
-                </button>
+                </Link>
                 {activeMega === "buyers" && (
                   <MegaMenuWrapper>
                     <div className="flex items-center gap-2 px-5 pt-4 pb-3 border-b border-slate-100 bg-gradient-to-r from-blue-50 to-indigo-50">
@@ -257,9 +257,9 @@ const Navbar = () => {
 
               {/* For Tenants */}
               <div className="relative" onMouseEnter={() => openMega("tenants")} onMouseLeave={closeMega}>
-                <button className={navItemCls("tenants")}>
+                <Link to="/tenants" className={navItemCls("tenants")}>
                   For Tenants <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", activeMega === "tenants" && "rotate-180")} />
-                </button>
+                </Link>
                 {activeMega === "tenants" && (
                   <MegaMenuWrapper>
                     <div className="flex items-center gap-2 px-5 pt-4 pb-3 border-b border-slate-100 bg-gradient-to-r from-emerald-50 to-teal-50">
@@ -274,9 +274,9 @@ const Navbar = () => {
 
               {/* For Sellers */}
               <div className="relative" onMouseEnter={() => openMega("sellers")} onMouseLeave={closeMega}>
-                <button className={navItemCls("sellers")}>
+                <Link to="/sellers" className={navItemCls("sellers")}>
                   For Sellers <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", activeMega === "sellers" && "rotate-180")} />
-                </button>
+                </Link>
                 {activeMega === "sellers" && (
                   <MegaMenuWrapper>
                     <div className="flex items-center gap-2 px-5 pt-4 pb-3 border-b border-slate-100 bg-gradient-to-r from-amber-50 to-orange-50">
@@ -291,9 +291,9 @@ const Navbar = () => {
 
               {/* Services */}
               <div className="relative" onMouseEnter={() => openMega("services")} onMouseLeave={closeMega}>
-                <button className={navItemCls("services")}>
+                <Link to="/services" className={navItemCls("services")}>
                   Services <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", activeMega === "services" && "rotate-180")} />
-                </button>
+                </Link>
                 {activeMega === "services" && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 z-50 w-72">
                     <div className="bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.14)] border border-slate-100 p-3 max-h-[420px] overflow-y-auto">
@@ -319,9 +319,9 @@ const Navbar = () => {
 
               {/* News & Guide */}
               <div className="relative" onMouseEnter={() => openMega("news")} onMouseLeave={closeMega}>
-                <button className={navItemCls("news")}>
+                <Link to="/news-guide" className={navItemCls("news")}>
                   News &amp; Guide <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", activeMega === "news" && "rotate-180")} />
-                </button>
+                </Link>
                 {activeMega === "news" && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 z-50 w-52">
                     <div className="bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.14)] border border-slate-100 p-2">
@@ -418,6 +418,13 @@ const Navbar = () => {
                   </button>
                   {mobileExpanded === section.key && (
                     <div className="ml-2 mb-2 space-y-1 bg-slate-50 rounded-xl p-2">
+                      <Link
+                        to={`/${section.key}`}
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white text-sm font-bold text-[#1D4ED8] transition-colors"
+                      >
+                        <ArrowRight className="w-4 h-4 shrink-0" />
+                        View {section.label} Portal
+                      </Link>
                       {section.data.sections.flatMap(s => s.items).map(item => (
                         <Link
                           key={item.label}
@@ -442,8 +449,15 @@ const Navbar = () => {
                   Services
                   <ChevronDown className={cn("w-4 h-4 text-slate-400 transition-transform", mobileExpanded === "services" && "rotate-180")} />
                 </button>
-                {mobileExpanded === "services" && (
+                 {mobileExpanded === "services" && (
                   <div className="ml-2 mb-2 space-y-1 bg-slate-50 rounded-xl p-2">
+                    <Link
+                      to="/services"
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white text-sm font-bold text-[#1D4ED8] transition-colors"
+                    >
+                      <ArrowRight className="w-4 h-4 shrink-0" />
+                      View Services Portal
+                    </Link>
                     {SERVICES_MENU.map(s => (
                       <Link
                         key={s.label}
@@ -459,7 +473,7 @@ const Navbar = () => {
               </div>
 
               {[
-                { label: "News & Guide", href: "/blog" }
+                { label: "News & Guide", href: "/news-guide" }
               ].map(link => (
                 <Link
                   key={link.label}
