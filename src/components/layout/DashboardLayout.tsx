@@ -6,6 +6,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import PageTransition from "@/components/ui/PageTransition";
 
 export interface SidebarTab {
   id: string;
@@ -266,40 +267,14 @@ const DashboardLayout = ({
             </div>
           </div>
 
-          {/* Tab indicator strip */}
-          <div className="bg-white border-b border-[#E2E8F0] px-4 sm:px-6 overflow-x-auto scrollbar-hide">
-            <div className="flex items-center gap-1 py-2 min-w-max">
-              {tabs.map(tab => {
-                const Icon = tab.icon;
-                return (
-                  <NavLink
-                    key={tab.id}
-                    to={`/dashboard/${role}/${tab.id}`}
-                    className={({ isActive }) => cn(
-                      "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap",
-                      isActive
-                        ? "text-white shadow-sm font-bold"
-                        : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F5F7FA]"
-                    )}
-                    style={({ isActive }) => isActive ? { background: theme.accent } : {}}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                    {tab.label}
-                    {tab.badge !== undefined && (
-                      <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-white/25 text-white">
-                        {tab.badge}
-                      </span>
-                    )}
-                  </NavLink>
-                );
-              })}
-            </div>
-          </div>
+
 
           {/* Page Content */}
           <main className="flex-1 p-4 sm:p-6">
             <div className="max-w-7xl mx-auto w-full space-y-6">
-              {children}
+              <PageTransition key={pathname}>
+                {children}
+              </PageTransition>
             </div>
           </main>
         </div>

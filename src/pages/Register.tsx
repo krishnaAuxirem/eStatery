@@ -14,6 +14,8 @@ const ROLES: { value: UserRole; label: string; desc: string; icon: React.Compone
   { value: "tenant", label: "Tenant", desc: "Find and manage rental properties", icon: Key }
 ];
 
+import { DemoCaptcha } from "@/components/ui/DemoCaptcha";
+
 const Register = () => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState("");
@@ -23,12 +25,14 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState<UserRole>("buyer");
   const [showPassword, setShowPassword] = useState(false);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!captchaVerified) { toast.error("Please complete the CAPTCHA verification."); return; }
     if (password !== confirmPassword) { toast.error("Passwords do not match"); return; }
     if (password.length < 6) { toast.error("Password must be at least 6 characters"); return; }
     setIsLoading(true);
@@ -164,6 +168,14 @@ const Register = () => {
                     <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required placeholder="Repeat password" className="flex-1 outline-none text-sm text-brand-text placeholder-brand-muted bg-transparent" />
                   </div>
                 </div>
+              </div>
+
+              {/* CAPTCHA Verification */}
+              <div className="pt-1">
+                <DemoCaptcha
+                  verified={captchaVerified}
+                  onVerify={(v) => setCaptchaVerified(v)}
+                />
               </div>
 
               <div className="flex gap-3 pt-2">

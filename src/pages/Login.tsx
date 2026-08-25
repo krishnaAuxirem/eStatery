@@ -6,10 +6,13 @@ import { DEMO_CREDENTIALS } from "@/data/mockUsers";
 import { toast } from "sonner";
 import heroBg from "@/assets/hero-bg.jpg";
 
+import { DemoCaptcha } from "@/components/ui/DemoCaptcha";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const { login } = useAuth();
@@ -31,6 +34,10 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!captchaVerified) {
+      toast.error("Please complete the CAPTCHA verification to sign in.");
+      return;
+    }
     setIsLoading(true);
     const result = await login(email, password);
     setIsLoading(false);
@@ -46,6 +53,7 @@ const Login = () => {
   const fillCredentials = (cred: typeof DEMO_CREDENTIALS[0], idx: number) => {
     setEmail(cred.email);
     setPassword(cred.password);
+    setCaptchaVerified(true);
     setCopiedIdx(idx);
     setTimeout(() => setCopiedIdx(null), 2000);
   };
@@ -127,6 +135,14 @@ const Login = () => {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+            </div>
+
+            {/* CAPTCHA Verification */}
+            <div className="pt-1">
+              <DemoCaptcha
+                verified={captchaVerified}
+                onVerify={(v) => setCaptchaVerified(v)}
+              />
             </div>
 
             <button

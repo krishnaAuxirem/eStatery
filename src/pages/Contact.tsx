@@ -38,14 +38,21 @@ const FAQS_LIST = [
   { q: "What is the RERA validation process?", a: "Our support team checks developer and broker registration numbers on respective state regulatory databases before allowing listings to display a 'Verified RERA' badge." }
 ];
 
+import { DemoCaptcha } from "@/components/ui/DemoCaptcha";
+
 const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [faqSearch, setFaqSearch] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!captchaVerified) {
+      toast.error("Please complete the CAPTCHA verification to send your message.");
+      return;
+    }
     toast.success("Message sent! We'll get back to you within 24 hours.");
     setSubmitted(true);
   };
@@ -273,6 +280,14 @@ const Contact = () => {
                           placeholder="Please provide details about your property, listing, or account query..."
                           rows={5}
                           className="w-full px-4 py-3 rounded-xl border border-slate-200 text-xs outline-none focus:border-[#1D4ED8] resize-none"
+                        />
+                      </div>
+
+                      {/* CAPTCHA Verification */}
+                      <div className="pt-1">
+                        <DemoCaptcha
+                          verified={captchaVerified}
+                          onVerify={(v) => setCaptchaVerified(v)}
                         />
                       </div>
 

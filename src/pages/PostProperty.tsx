@@ -9,6 +9,8 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import prop1 from "@/assets/property-1.jpg";
 
+import { DemoCaptcha } from "@/components/ui/DemoCaptcha";
+
 const STEPS = ["Basic Info", "Location", "Details", "Preview"];
 
 const PostProperty = () => {
@@ -16,6 +18,7 @@ const PostProperty = () => {
   const { addProperty } = useProperty();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
   const [form, setForm] = useState({
     title: "", type: "apartment", listingType: "buy", price: "",
     city: "Mumbai", area: "", address: "", bedrooms: "2", bathrooms: "2",
@@ -26,6 +29,7 @@ const PostProperty = () => {
 
   const handleSubmit = () => {
     if (!user) { toast.error("Please login to post a property"); return; }
+    if (!captchaVerified) { toast.error("Please complete the CAPTCHA verification to submit your listing."); return; }
     const newProp = addProperty({
       title: form.title || "New Property",
       type: form.type as "apartment" | "villa" | "house" | "commercial" | "studio" | "penthouse",
@@ -150,6 +154,13 @@ const PostProperty = () => {
                 </div>
                 <div className="mt-4 p-4 bg-amber-50 rounded-xl border border-amber-100 text-amber-700 text-sm">
                   Your listing will be reviewed by our team within 24 hours before going live.
+                </div>
+
+                <div className="mt-5">
+                  <DemoCaptcha
+                    verified={captchaVerified}
+                    onVerify={(v) => setCaptchaVerified(v)}
+                  />
                 </div>
               </div>
             )}

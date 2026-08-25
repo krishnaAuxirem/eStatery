@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { 
   Brain, TrendingUp, TrendingDown, BarChart3, Map, Zap, 
   ArrowRight, Target, Shield, Compass, Sparkles, Building, Info, Award
@@ -48,6 +49,15 @@ interface ValuationResult {
 
 export default function AIInsights() {
   const [activeTab, setActiveTab] = useState<"calculator" | "market">("calculator");
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash === "#predictor") {
+      setActiveTab("market");
+    } else if (hash === "#guide") {
+      setActiveTab("calculator");
+    }
+  }, [hash]);
 
   // Valuation calculator states
   const [calcCity, setCalcCity] = useState("Mumbai");
@@ -195,7 +205,7 @@ export default function AIInsights() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
               
               {/* Parameter Inputs Panel */}
-              <div className="lg:col-span-1 bg-white rounded-3xl border border-[#E2E8F0] p-6 space-y-5 shadow-brand-md">
+              <div id="guide" className="lg:col-span-1 bg-white rounded-3xl border border-[#E2E8F0] p-6 space-y-5 shadow-brand-md">
                 <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-1.5">
                   <Compass className="w-4 h-4 text-[#1D4ED8]" /> Valuation Inputs
                 </h3>

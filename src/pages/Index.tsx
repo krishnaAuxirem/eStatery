@@ -74,7 +74,7 @@ const Index = () => {
       <Navbar />
 
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex items-center overflow-hidden pt-20">
+      <section className="relative min-h-[calc(100vh-66px)] flex items-center overflow-hidden pt-16 pb-8 lg:pt-20 lg:pb-12">
         {/* BG */}
         <div className="absolute inset-0">
           <img src={heroBg} alt="eStatery Hero" className="w-full h-full object-cover" />
@@ -86,7 +86,7 @@ const Index = () => {
         <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-indigo-600/15 rounded-full blur-3xl animate-float" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-28 w-full">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-4 pb-10 lg:pt-6 lg:pb-14 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Column: Content + CTAs */}
             <div className="lg:col-span-7 space-y-6">
